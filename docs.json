@@ -16,8 +16,7 @@
           {
             "group": "Visão Geral",
             "pages": [
-              "index",
-              "conheça-a-wincred"
+              "index"
             ]
           }
         ]
@@ -49,10 +48,17 @@
           {
             "group": "Casos de Uso",
             "pages": [
-              "e-consignado/casos-de-uso/contratação-ativa"
+              {
+                "group": "Contratação Ativa",
+                "pages": [
+                  "e-consignado/casos-de-uso/contratação-ativa/comece-por-aqui",
+                  "e-consignado/casos-de-uso/contratação-ativa/01-autorização-para-consulta-de-dados",
+                  "e-consignado/casos-de-uso/contratação-ativa/fluxo-visual"
+                ]
+              }
             ]
           }
-        ] 
+        ]
       }
     ],
     "global": {
