@@ -14,7 +14,7 @@ Para configurar seus webhooks, você precisa:
 <Steps>
   <Step title="Desenvolver uma URL para recebimento">
     Crie um endpoint em seu sistema que esteja preparado para receber
-    requisições HTTP do tipo `POST`
+    requisições HTTP do tipo POST
   </Step>
   <Step title="Configurar ambientes separados">
     Defina URLs distintas para homologação (testes) e produção (operação real)
@@ -23,38 +23,8 @@ Para configurar seus webhooks, você precisa:
     Escolha um método de autenticação aceito pela Wincred para garantir a
     segurança das comunicações
   </Step>
-  <Step title="Informar as credenciais">
-   ## Enviando suas Credenciais
-
-Após configurar seus endpoints e definir o método de autenticação, você deve enviar as informações para a equipe de integração da Wincred.
-
-### Email de Configuração
-
-Envie um email para **tech@wincred.digital** com as seguintes informações:
-
-<CodeGroup>
-```text Modelo de Email
-Para: tech@wincred.digital
-Assunto: Integração - Originador [Nome do seu Originador]
-
-Olá equipe Wincred,
-
-Segue as configurações de webhook para integração:
-
-ORIGINADOR: [Nome da sua empresa/originador]
-
-AMBIENTE DE HOMOLOGAÇÃO:
-URL: [url completa do webhook de homologação]
-Método de autenticação: [Bearer Token / API Key / etc]
-Credencial: [seu token/chave de homologação]
-
-AMBIENTE DE PRODUÇÃO:
-URL: [url completa do webhook de produção]
-Método de autenticação: [Bearer Token / API Key / etc]
-Credencial: [seu token/chave de produção]
-
-```
-
+  <Step title="Informar as credenciais à Wincred">
+    Envie um email com suas configurações para a equipe de integração
   </Step>
 </Steps>
 
@@ -72,9 +42,7 @@ Você deve desenvolver um endpoint público que receberá as notificações via 
 **Exemplo de estrutura:**
 
 ```
-
 https://seu-dominio.com.br/webhooks/wincred
-
 ```
 
 ---
@@ -96,17 +64,13 @@ O ambiente de homologação deve ser usado durante todo o processo de desenvolvi
 **Exemplo de URL:**
 
 ```
-
 https://homolog.seu-dominio.com.br/webhooks/wincred
-
 ```
 
 ou
 
 ```
-
 https://seu-dominio.dev.br/webhooks/wincred
-
 ```
 
 ### Ambiente de Produção (Operação Real)
@@ -122,21 +86,17 @@ O ambiente de produção deve ser usado apenas quando sua integração estiver c
 **Exemplo de URL:**
 
 ```
-
 https://seu-dominio.com.br/webhooks/wincred
-
 ```
 
 ou
 
 ```
-
 https://api.seu-dominio.com.br/webhooks/wincred
-
-````
+```
 
 <Warning>
-  **Importante:** Sempre teste completamente no ambiente de homologação antes de
+  Importante: Sempre teste completamente no ambiente de homologação antes de
   ativar o ambiente de produção. URLs de produção processam dados reais e afetam
   operações comerciais.
 </Warning>
@@ -145,13 +105,13 @@ https://api.seu-dominio.com.br/webhooks/wincred
 
 ## 3. Método de Chamada
 
-Todos os webhooks da Wincred utilizam o método HTTP **`POST`** para enviar as notificações.
+Todos os webhooks da Wincred utilizam o método HTTP POST para enviar as notificações.
 
 Seu endpoint deve estar preparado para:
 
-- Aceitar requisições `POST`
+- Aceitar requisições POST
 - Processar o payload JSON no corpo da requisição
-- Retornar uma resposta HTTP apropriada (idealmente `200 OK`)
+- Retornar uma resposta HTTP apropriada (idealmente 200 OK)
 
 ---
 
@@ -159,18 +119,17 @@ Seu endpoint deve estar preparado para:
 
 Para garantir a segurança das comunicações, você deve definir um método de autenticação. A Wincred suporta os seguintes métodos:
 
-| Método de Autenticação   | Tipo da Chave   | Exemplo de Token                     |
-| ------------------------ | --------------- | ------------------------------------ |
-| **Bearer Token**         | `Authorization` | `Bearer eyJhbGciOiJIUzI1CI6IkpXVCJ9` |
-| **API Key**              | `API-Key`       | `1234567890abcdef1234567890abcdef`   |
-| **Basic Authentication** | `Authorization` | `Basic dXNlcm5hbWU6cGFzc3dvcmQ`      |
-| **X-API-Key**            | `X-API-Key`     | `0987654321fedcba0987654321fedcba`   |
-| **JWT (JSON Web Token)** | `Authorization` | `Bearer eyJhbGciOiJIUzI1NiIs`        |
-| **HMAC**                 | `Authorization` | `HMAC 5d41402abc4b19d911017c592`     |
+| Método de Autenticação | Tipo da Chave | Exemplo de Token                   |
+| ---------------------- | ------------- | ---------------------------------- |
+| Bearer Token           | Authorization | Bearer eyJhbGciOiJIUzI1CI6IkpXVCJ9 |
+| API Key                | API-Key       | 1234567890abcdef1234567890abcdef   |
+| Basic Authentication   | Authorization | Basic dXNlcm5hbWU6cGFzc3dvcmQ      |
+| X-API-Key              | X-API-Key     | 0987654321fedcba0987654321fedcba   |
+| JWT (JSON Web Token)   | Authorization | Bearer eyJhbGciOiJIUzI1NiIs        |
 
 <Tip>
-  Recomendamos o uso de **Bearer Token** ou **JWT** para maior segurança e
-  facilidade de implementação.
+  Recomendamos o uso de Bearer Token ou JWT para maior segurança e facilidade de
+  implementação.
 </Tip>
 
 ### Como funciona
@@ -183,7 +142,111 @@ Para garantir a segurança das comunicações, você deve definir um método de 
 
 ---
 
-## Eventos
+## Enviando suas Credenciais
+
+Após configurar seus endpoints e definir o método de autenticação, você deve enviar as informações para a equipe de integração da Wincred.
+
+### Email de Configuração
+
+Envie um email para **tech@wincred.digital** com as seguintes informações:
+
+<CodeGroup>
+
+```text Modelo de Email
+Para: tech@wincred.digital
+Assunto: Integração - Originador [Nome do seu Originador]
+
+Olá equipe Wincred,
+
+Segue as configurações de webhook para integração:
+
+ORIGINADOR: [Nome da sua empresa/originador]
+
+AMBIENTE DE HOMOLOGAÇÃO:
+URL: [url completa do webhook de homologação]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de homologação]
+
+AMBIENTE DE PRODUÇÃO:
+URL: [url completa do webhook de produção]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de produção]
+
+OBSERVAÇÕES:
+[Qualquer informação adicional relevante]
+
+Aguardo retorno para prosseguirmos com os testes.
+
+Atenciosamente,
+[Seu nome]
+[Sua empresa]
+```
+
+```text Exemplo Preenchido
+Para: tech@wincred.digital
+Assunto: Integração - Originador Tech Solutions LTDA
+
+Olá equipe Wincred,
+
+Segue as configurações de webhook para integração:
+
+ORIGINADOR: Tech Solutions LTDA
+
+AMBIENTE DE HOMOLOGAÇÃO:
+URL: https://homolog.techsolutions.com.br/webhooks/wincred
+Método de autenticação: Bearer Token
+Credencial: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.homolog.token
+
+AMBIENTE DE PRODUÇÃO:
+URL: https://api.techsolutions.com.br/webhooks/wincred
+Método de autenticação: Bearer Token
+Credencial: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.prod.token
+
+OBSERVAÇÕES:
+Endpoint configurado para retornar 200 OK após processamento.
+Timeout configurado para 30 segundos.
+
+Aguardo retorno para prosseguirmos com os testes.
+
+Atenciosamente,
+João Silva
+Tech Solutions LTDA
+```
+
+</CodeGroup>
+
+<Tip>
+  Dica de Segurança: Use credenciais diferentes para homologação e produção.
+  Isso facilita a rotação de credenciais e isola os ambientes.
+</Tip>
+
+### Informações Obrigatórias
+
+Certifique-se de incluir no email:
+
+- **Nome do Originador** - Razão social da sua empresa
+- **URL de Homologação** - Endpoint completo para testes
+- **URL de Produção** - Endpoint completo para operação
+- **Método de Autenticação** - Qual método você escolheu
+- **Credenciais** - Tokens/chaves para ambos os ambientes
+
+### Após o Envio
+
+Depois de enviar o email:
+
+1. **Aguarde confirmação** - A equipe Wincred confirmará o recebimento
+2. **Validação técnica** - Será feita uma validação das URLs e credenciais
+3. **Testes iniciais** - A equipe enviará webhooks de teste para homologação
+4. **Ativação** - Após validação bem-sucedida, o ambiente será ativado
+
+<Warning>
+  Tempo de processamento: A configuração geralmente leva de 1 a 2 dias úteis.
+  Para integrações urgentes, mencione no email.
+</Warning>
+
+---
+
+## Eventos de Webhook
 
 Ao interagir com as APIs do E-Consignado Trabalhador, a Wincred enviará automaticamente eventos para sua URL de webhook configurada. Cada evento notifica sobre uma ação específica ou mudança de status.
 
@@ -197,7 +260,7 @@ Todos os eventos de webhook possuem a seguinte estrutura básica:
   "endpoint": "string",
   "payload": {}
 }
-````
+```
 
 **Campos:**
 
@@ -209,55 +272,79 @@ Todos os eventos de webhook possuem a seguinte estrutura básica:
 
 ## Tipos de Eventos
 
+<Note>
+  Os exemplos de payloads abaixo são ilustrativos e representam a estrutura
+  típica dos eventos. Os campos específicos e seus valores podem variar conforme
+  a documentação oficial da DATAPREV. Consulte sempre a documentação técnica
+  mais recente para detalhes completos sobre cada campo retornado.
+</Note>
+
 ### 1. Nova Solicitação na CTPS
 
 Notificação enviada periodicamente quando uma nova solicitação é identificada no aplicativo da CTPS.
 
-**Quando é disparado:** Após detecção de nova solicitação no app CTPS
-
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
-  "codigoRequisicao": "req_12345678-abcd-1234-efgh-123456789012",
-  "endpoint": "/solicitacoes/nova",
+  "codigoRequisicao": "d6b6fdc1-5e3b-4e07-88d9-3b2f0416f734",
+  "endpoint": "/propostas-ctps/solicitacoes-trabalhador",
   "payload": {
-    "cpf": "12345678900",
-    "nome": "João da Silva",
-    "dataSolicitacao": "2025-10-20T10:30:00Z",
-    "valorSolicitado": 5000.00,
-    "prazo": 24,
-    "statusSolicitacao": "PENDENTE_ANALISE",
-    "identificadorSolicitacao": "SOL123456789"
+    "idSolicitacao": 30697303,
+    "cpf": 99971503336,
+    "matricula": "MATCEN715",
+    "inscricaoEmpregador": {
+      "codigo": 1,
+      "descricao": "CNPJ"
+    },
+    "numeroInscricaoEmpregador": 42422253000101,
+    "valorLiberado": 1500,
+    "nroParcelas": 10,
+    "dataHoraValidadeSolicitacao": "01042025153522",
+    "nomeTrabalhador": "nome do trabalhador",
+    "dataNascimento": "13031982",
+    "margemDisponivel": 3230,
+    "elegivelEmprestimo": true,
+    "dataAdmissao": "13032005"
   }
 }
 ```
+
 </CodeGroup>
+
+Tabela de referência para o campo `inscricaoEmpregador`:
+
+| Código | Descrição |
+| ------ | --------- |
+| 1      | CNPJ      |
+| 2      | CPF       |
 
 ### 2. Atualização de Situação de Proposta
 
-Notifica sobre mudanças na posição da proposta após sua inclusão, informando sua posição no leilão.
-
-**Quando é disparado:** Após inclusão da proposta e mudanças de status no leilão
+Após a inclusão da proposta, essa notificação de atualização de situação de proposta é enviada para informar a posição do parceiro no leilão.
 
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
-  "codigoRequisicao": "req_23456789-bcde-2345-fghi-234567890123",
-  "endpoint": "/propostas/atualizacao-status",
+  "codigoRequisicao": "d6b6fdc1-5e3b-4e07-88d9-3b2f0416f734",
+  "endpoint": "/contrato/oferta-leilao/incluir-proposta",
   "payload": {
-    "codigoProposta": "PROP987654321",
-    "cpf": "12345678900",
-    "situacao": "EM_LEILAO",
-    "posicaoLeilao": 2,
-    "totalParticipantes": 5,
-    "taxaAtual": 1.85,
-    "melhorTaxa": 1.65,
-    "dataAtualizacao": "2025-10-20T11:45:00Z",
-    "valorProposta": 5000.00,
-    "prazo": 24
+    "status": "Enviada",
+    "proposta": {
+      "numeroProposta": 0,
+      "valorCETAnual": 0,
+      "valorCETMensal": 0,
+      "valorEmprestimo": 0,
+      "valorIOF": 0,
+      "valorParcela": 0,
+      "valorTaxaAnual": 0,
+      "valorTaxaMensal": 0
+    }
   }
 }
 ```
+
 </CodeGroup>
 
 ### 3. Geração de CCB
@@ -273,6 +360,7 @@ Enviado após a requisição de geração de contrato, contendo os dados da Céd
 - Dados para impressão do documento
 
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
   "codigoRequisicao": "req_34567890-cdef-3456-ghij-345678901234",
@@ -282,11 +370,11 @@ Enviado após a requisição de geração de contrato, contendo os dados da Céd
     "numeroCCB": "CCB20251020123456",
     "cpf": "12345678900",
     "nome": "João da Silva",
-    "valorContrato": 5000.00,
-    "valorLiberado": 4500.00,
+    "valorContrato": 5000.0,
+    "valorLiberado": 4500.0,
     "taxaJuros": 1.85,
     "prazo": 24,
-    "valorParcela": 225.50,
+    "valorParcela": 225.5,
     "dataEmissao": "2025-10-20T12:00:00Z",
     "dataPrimeiroVencimento": "2025-11-20",
     "urlDocumento": "https://docs.wincred.digital/ccb/CCB20251020123456.pdf",
@@ -294,6 +382,7 @@ Enviado após a requisição de geração de contrato, contendo os dados da Céd
   }
 }
 ```
+
 </CodeGroup>
 
 ### 4. Averbação de Empréstimo
@@ -308,6 +397,7 @@ Notificação enviada após a averbação do empréstimo na DATAPREV, antes do e
 </Info>
 
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
   "codigoRequisicao": "req_45678901-defg-4567-hijk-456789012345",
@@ -319,13 +409,14 @@ Notificação enviada após a averbação do empréstimo na DATAPREV, antes do e
     "statusAverbacao": "AVERBADO",
     "protocoloDataprev": "PROT2025102012345",
     "dataAverbacao": "2025-10-20T13:30:00Z",
-    "valorAverbado": 5000.00,
-    "margemConsignavel": 1500.00,
-    "margemUtilizada": 225.50,
-    "margemDisponivel": 1274.50
+    "valorAverbado": 5000.0,
+    "margemConsignavel": 1500.0,
+    "margemUtilizada": 225.5,
+    "margemDisponivel": 1274.5
   }
 }
 ```
+
 </CodeGroup>
 
 ### 5. Consulta de Lista de Vínculos Empregatícios
@@ -335,6 +426,7 @@ Retorna a lista de vínculos empregatícios que o trabalhador possui.
 **Quando é disparado:** Após requisição de consulta de lista de vínculos
 
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
   "codigoRequisicao": "req_56789012-efgh-5678-ijkl-567890123456",
@@ -365,6 +457,7 @@ Retorna a lista de vínculos empregatícios que o trabalhador possui.
   }
 }
 ```
+
 </CodeGroup>
 
 ### 6. Consulta de Dados de Vínculo Empregatício
@@ -374,6 +467,7 @@ Fornece os detalhes completos de um vínculo empregatício específico do trabal
 **Quando é disparado:** Após requisição de consulta de dados de um vínculo específico
 
 <CodeGroup>
+
 ```json Exemplo de Callback
 {
   "codigoRequisicao": "req_67890123-fghi-6789-jklm-678901234567",
@@ -394,46 +488,23 @@ Fornece os detalhes completos de um vínculo empregatício específico do trabal
         "descricao": "Analista de sistemas de informação"
       },
       "remuneracao": {
-        "salarioBase": 5000.00,
-        "mediaRemuneracao": 5500.00,
-        "ultimaRemuneracao": 5500.00,
+        "salarioBase": 5000.0,
+        "mediaRemuneracao": 5500.0,
+        "ultimaRemuneracao": 5500.0,
         "dataUltimaRemuneracao": "2025-09-30"
       },
       "margemConsignavel": {
-        "margemTotal": 1750.00,
-        "margemUtilizada": 225.50,
-        "margemDisponivel": 1524.50,
+        "margemTotal": 1750.0,
+        "margemUtilizada": 225.5,
+        "margemDisponivel": 1524.5,
         "percentualComprometido": 12.89
       }
     }
   }
 }
 ```
+
 </CodeGroup>
-
----
-
-## Documentação de Referência
-
-Para informações detalhadas sobre os objetos e campos retornados nos eventos, consulte:
-
-<CardGroup cols={2}>
-  <Card
-    title="Autorização e Consulta DATAPREV"
-    icon="file-pdf"
-    href="https://bmp-docs-462219491253.s3.sa-east-1.amazonaws.com/termo-de-autorizacao-dataprev-e-consignado.pdf"
-  >
-    Documentação completa com descrição de todos os objetos que podem estar nos
-    retornos
-  </Card>
-  <Card
-    title="Classificação Brasileira de Ocupações (CBO)"
-    icon="book"
-    href="https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002_lista.pdf"
-  >
-    Referência oficial do Governo Brasileiro para códigos e descrições CBO
-  </Card>
-</CardGroup>
 
 ---
 
@@ -452,7 +523,7 @@ Para informações detalhadas sobre os objetos e campos retornados nos eventos, 
     Valide que seu endpoint responde corretamente e processa payloads JSON
   </Step>
   <Step title="Envie suas configurações">
-    Envie um email para **tech@wincred.digital** com todas as informações (veja
+    Envie um email para tech@wincred.digital com todas as informações (veja
     seção acima)
   </Step>
   <Step title="Aguarde validação">
@@ -467,6 +538,6 @@ Para informações detalhadas sobre os objetos e campos retornados nos eventos, 
 </Steps>
 
 <Note>
-  **Precisa de ajuda?** Entre em contato com a equipe de integração da Wincred
-  para suporte técnico durante a configuração.
+  Precisa de ajuda? Entre em contato com a equipe de integração da Wincred para
+  suporte técnico durante a configuração.
 </Note>
