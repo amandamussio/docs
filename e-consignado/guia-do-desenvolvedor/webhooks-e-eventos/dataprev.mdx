@@ -24,12 +24,36 @@ Para configurar seus webhooks, você precisa:
     segurança das comunicações
   </Step>
   <Step title="Informar as credenciais">
-    Envie as URLs e o método de autenticação escolhido para a equipe de
-    integração da Wincred `tech@wincred.digital` no formato:
+   ## Enviando suas Credenciais
 
-    Assunto: Integração - Originador [Nome do originador]
-    Webhook HMG: [url do webhook de homologação]
-    Webhook PROD: [ url do webhook de produção ]
+Após configurar seus endpoints e definir o método de autenticação, você deve enviar as informações para a equipe de integração da Wincred.
+
+### Email de Configuração
+
+Envie um email para **tech@wincred.digital** com as seguintes informações:
+
+<CodeGroup>
+```text Modelo de Email
+Para: tech@wincred.digital
+Assunto: Integração - Originador [Nome do seu Originador]
+
+Olá equipe Wincred,
+
+Segue as configurações de webhook para integração:
+
+ORIGINADOR: [Nome da sua empresa/originador]
+
+AMBIENTE DE HOMOLOGAÇÃO:
+URL: [url completa do webhook de homologação]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de homologação]
+
+AMBIENTE DE PRODUÇÃO:
+URL: [url completa do webhook de produção]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de produção]
+
+```
 
   </Step>
 </Steps>
@@ -48,7 +72,9 @@ Você deve desenvolver um endpoint público que receberá as notificações via 
 **Exemplo de estrutura:**
 
 ```
+
 https://seu-dominio.com.br/webhooks/wincred
+
 ```
 
 ---
@@ -70,13 +96,17 @@ O ambiente de homologação deve ser usado durante todo o processo de desenvolvi
 **Exemplo de URL:**
 
 ```
+
 https://homolog.seu-dominio.com.br/webhooks/wincred
+
 ```
 
 ou
 
 ```
+
 https://seu-dominio.dev.br/webhooks/wincred
+
 ```
 
 ### Ambiente de Produção (Operação Real)
@@ -92,14 +122,18 @@ O ambiente de produção deve ser usado apenas quando sua integração estiver c
 **Exemplo de URL:**
 
 ```
+
 https://seu-dominio.com.br/webhooks/wincred
+
 ```
 
 ou
 
 ```
+
 https://api.seu-dominio.com.br/webhooks/wincred
-```
+
+````
 
 <Warning>
   **Importante:** Sempre teste completamente no ambiente de homologação antes de
@@ -149,7 +183,7 @@ Para garantir a segurança das comunicações, você deve definir um método de 
 
 ---
 
-## Eventos de Webhook
+## Eventos
 
 Ao interagir com as APIs do E-Consignado Trabalhador, a Wincred enviará automaticamente eventos para sua URL de webhook configurada. Cada evento notifica sobre uma ação específica ou mudança de status.
 
@@ -163,7 +197,7 @@ Todos os eventos de webhook possuem a seguinte estrutura básica:
   "endpoint": "string",
   "payload": {}
 }
-```
+````
 
 **Campos:**
 
@@ -181,11 +215,50 @@ Notificação enviada periodicamente quando uma nova solicitação é identifica
 
 **Quando é disparado:** Após detecção de nova solicitação no app CTPS
 
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_12345678-abcd-1234-efgh-123456789012",
+  "endpoint": "/solicitacoes/nova",
+  "payload": {
+    "cpf": "12345678900",
+    "nome": "João da Silva",
+    "dataSolicitacao": "2025-10-20T10:30:00Z",
+    "valorSolicitado": 5000.00,
+    "prazo": 24,
+    "statusSolicitacao": "PENDENTE_ANALISE",
+    "identificadorSolicitacao": "SOL123456789"
+  }
+}
+```
+</CodeGroup>
+
 ### 2. Atualização de Situação de Proposta
 
 Notifica sobre mudanças na posição da proposta após sua inclusão, informando sua posição no leilão.
 
 **Quando é disparado:** Após inclusão da proposta e mudanças de status no leilão
+
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_23456789-bcde-2345-fghi-234567890123",
+  "endpoint": "/propostas/atualizacao-status",
+  "payload": {
+    "codigoProposta": "PROP987654321",
+    "cpf": "12345678900",
+    "situacao": "EM_LEILAO",
+    "posicaoLeilao": 2,
+    "totalParticipantes": 5,
+    "taxaAtual": 1.85,
+    "melhorTaxa": 1.65,
+    "dataAtualizacao": "2025-10-20T11:45:00Z",
+    "valorProposta": 5000.00,
+    "prazo": 24
+  }
+}
+```
+</CodeGroup>
 
 ### 3. Geração de CCB
 
@@ -199,6 +272,30 @@ Enviado após a requisição de geração de contrato, contendo os dados da Céd
 - Código da proposta
 - Dados para impressão do documento
 
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_34567890-cdef-3456-ghij-345678901234",
+  "endpoint": "/contratos/geracao-ccb",
+  "payload": {
+    "codigoProposta": "PROP987654321",
+    "numeroCCB": "CCB20251020123456",
+    "cpf": "12345678900",
+    "nome": "João da Silva",
+    "valorContrato": 5000.00,
+    "valorLiberado": 4500.00,
+    "taxaJuros": 1.85,
+    "prazo": 24,
+    "valorParcela": 225.50,
+    "dataEmissao": "2025-10-20T12:00:00Z",
+    "dataPrimeiroVencimento": "2025-11-20",
+    "urlDocumento": "https://docs.wincred.digital/ccb/CCB20251020123456.pdf",
+    "statusCCB": "GERADA"
+  }
+}
+```
+</CodeGroup>
+
 ### 4. Averbação de Empréstimo
 
 Notificação enviada após a averbação do empréstimo na DATAPREV, antes do envio dos documentos.
@@ -210,17 +307,109 @@ Notificação enviada após a averbação do empréstimo na DATAPREV, antes do e
   processo automaticamente antes do envio dos documentos.
 </Info>
 
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_45678901-defg-4567-hijk-456789012345",
+  "endpoint": "/contratos/averbacao",
+  "payload": {
+    "numeroCCB": "CCB20251020123456",
+    "codigoProposta": "PROP987654321",
+    "cpf": "12345678900",
+    "statusAverbacao": "AVERBADO",
+    "protocoloDataprev": "PROT2025102012345",
+    "dataAverbacao": "2025-10-20T13:30:00Z",
+    "valorAverbado": 5000.00,
+    "margemConsignavel": 1500.00,
+    "margemUtilizada": 225.50,
+    "margemDisponivel": 1274.50
+  }
+}
+```
+</CodeGroup>
+
 ### 5. Consulta de Lista de Vínculos Empregatícios
 
 Retorna a lista de vínculos empregatícios que o trabalhador possui.
 
 **Quando é disparado:** Após requisição de consulta de lista de vínculos
 
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_56789012-efgh-5678-ijkl-567890123456",
+  "endpoint": "/vinculos/lista",
+  "payload": {
+    "cpf": "12345678900",
+    "nome": "João da Silva",
+    "totalVinculos": 2,
+    "vinculos": [
+      {
+        "identificadorVinculo": "VINC123456",
+        "cnpjEmpregador": "12345678000190",
+        "nomeEmpregador": "Empresa XYZ LTDA",
+        "dataAdmissao": "2020-01-15",
+        "situacao": "ATIVO",
+        "tipoVinculo": "CLT"
+      },
+      {
+        "identificadorVinculo": "VINC789012",
+        "cnpjEmpregador": "98765432000110",
+        "nomeEmpregador": "Empresa ABC S.A.",
+        "dataAdmissao": "2015-06-10",
+        "dataDesligamento": "2019-12-31",
+        "situacao": "INATIVO",
+        "tipoVinculo": "CLT"
+      }
+    ]
+  }
+}
+```
+</CodeGroup>
+
 ### 6. Consulta de Dados de Vínculo Empregatício
 
 Fornece os detalhes completos de um vínculo empregatício específico do trabalhador.
 
 **Quando é disparado:** Após requisição de consulta de dados de um vínculo específico
+
+<CodeGroup>
+```json Exemplo de Callback
+{
+  "codigoRequisicao": "req_67890123-fghi-6789-jklm-678901234567",
+  "endpoint": "/vinculos/detalhes",
+  "payload": {
+    "identificadorVinculo": "VINC123456",
+    "cpf": "12345678900",
+    "nome": "João da Silva",
+    "dadosVinculo": {
+      "cnpjEmpregador": "12345678000190",
+      "nomeEmpregador": "Empresa XYZ LTDA",
+      "dataAdmissao": "2020-01-15",
+      "situacao": "ATIVO",
+      "tipoVinculo": "CLT",
+      "cargo": "Analista de Sistemas",
+      "cbo": {
+        "codigo": "212205",
+        "descricao": "Analista de sistemas de informação"
+      },
+      "remuneracao": {
+        "salarioBase": 5000.00,
+        "mediaRemuneracao": 5500.00,
+        "ultimaRemuneracao": 5500.00,
+        "dataUltimaRemuneracao": "2025-09-30"
+      },
+      "margemConsignavel": {
+        "margemTotal": 1750.00,
+        "margemUtilizada": 225.50,
+        "margemDisponivel": 1524.50,
+        "percentualComprometido": 12.89
+      }
+    }
+  }
+}
+```
+</CodeGroup>
 
 ---
 
@@ -251,18 +440,29 @@ Para informações detalhadas sobre os objetos e campos retornados nos eventos, 
 ## Próximos Passos
 
 <Steps>
-  <Step title="Configure seu endpoint">
-    Desenvolva a URL que receberá os webhooks em ambos os ambientes
+  <Step title="Configure seus endpoints">
+    Desenvolva as URLs que receberão os webhooks em ambos os ambientes
+    (homologação e produção)
   </Step>
   <Step title="Implemente a autenticação">
-    Adicione validação de autenticação conforme o método escolhido
+    Adicione validação de autenticação conforme o método escolhido e gere suas
+    credenciais
   </Step>
-  <Step title="Teste no ambiente de homologação">
-    Valide que seu sistema processa corretamente todos os tipos de eventos
+  <Step title="Teste localmente">
+    Valide que seu endpoint responde corretamente e processa payloads JSON
   </Step>
-  <Step title="Entre em contato com a Wincred">
-    Envie suas URLs e credenciais para a equipe de integração configurar o
-    sistema
+  <Step title="Envie suas configurações">
+    Envie um email para **tech@wincred.digital** com todas as informações (veja
+    seção acima)
+  </Step>
+  <Step title="Aguarde validação">
+    A equipe Wincred configurará o sistema e enviará webhooks de teste
+  </Step>
+  <Step title="Valide em homologação">
+    Teste que seu sistema processa corretamente todos os tipos de eventos
+  </Step>
+  <Step title="Ative produção">
+    Após testes aprovados, a equipe Wincred ativará o ambiente de produção
   </Step>
 </Steps>
 
