@@ -44,6 +44,9 @@
             ]
           },
           {
+            "group": "Referências de API"
+          },
+          {
             "group": "Casos de Uso",
             "pages": [
               "e-consignado/casos-de-uso/contratação-ativa"
