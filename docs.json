@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Mint Starter Kit",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#122621",
+    "light": "#f9e4b7",
+    "dark": "#122621"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -48,8 +48,14 @@
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "E-Consignado",
         "groups": [
+          {
+            "group": "Guia Inicial",
+            "pages": [
+              "e-consignado/introducao"
+            ]
+          },
           {
             "group": "API documentation",
             "pages": [
@@ -84,14 +90,14 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/wincred-logo-light.svg",
+    "dark": "/logo/wincred-logo-dark.svg"
   },
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Suporte",
+        "href": "mailto:tech@wincred.digital"
       }
     ],
     "primary": {
