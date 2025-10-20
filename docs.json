@@ -34,7 +34,13 @@
           {
             "group": "Guia do Desenvolvedor",
             "pages": [
-              "e-consignado/guia-do-desenvolvedor/autenticação"
+              "e-consignado/guia-do-desenvolvedor/autenticação",
+              {
+                "group": "Webhook e eventos",
+                "pages": [
+                  "e-consignado/guia-do-desenvolvedor/webhook-e-eventos/dataprev"
+                ]
+              }
             ]
           },
           {
