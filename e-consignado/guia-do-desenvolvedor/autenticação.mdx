@@ -5,22 +5,101 @@ description: Configure o acesso às nossas APIs nos ambientes de homologação e
 
 ## Autenticação
 
-<Info>
-  **Em breve:** Instruções detalhadas sobre como obter e utilizar suas
-  credenciais de API serão adicionadas aqui.
-</Info>
+Nossa API utiliza o protocolo **OAuth 2.0** com fluxo de credenciais de cliente (Client Credentials Flow) através do Microsoft Identity Platform (Azure AD).
 
 ### Credenciais de Acesso
 
-_Conteúdo a ser preenchido em breve_
+Para autenticar suas requisições, você precisará das seguintes credenciais, essas credenciais são enviadas no email do contato técnico responsável pela operação da sua instituição:
+
+| Parâmetro | Descrição |
+|-----------|-----------|
+| `client_id` | Identificador único da sua aplicação |
+| `client_secret` | Chave secreta da aplicação (armazenada no Bitwarden) |
+| `tenant_id` | Identificador do tenant no Azure AD |
+| `scope` | Escopo de acesso no formato `{resource}/.default` |
+
+<Warning>
+  O `client_secret` é sensível e deve ser mantido em segredo. Nunca o exponha em código client-side ou repositórios públicos.
+</Warning>
 
 ### Como Autenticar
 
-_Conteúdo a ser preenchido em breve_
+A autenticação é feita em duas etapas:
+
+#### 1. Obter o Access Token
+
+Primeiro, faça uma requisição POST para o endpoint de autenticação do Azure AD:
+```bash
+curl --request POST \
+  --url https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token \
+  --header "Content-Type: application/x-www-form-urlencoded" \
+  --data "client_id={client_id}&client_secret={client_secret}&scope={scope}&grant_type=client_credentials"
+```
+
+Substitua os placeholders `{tenant_id}`, `{client_id}`, `{client_secret}` e `{scope}` pelas suas credenciais.
+
+**Resposta:**
+```json
+{
+  "token_type": "Bearer",
+  "expires_in": 3599,
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+}
+```
+
+#### 2. Usar o Token nas Requisições
+
+Utilize o `access_token` recebido no header `Authorization` de suas requisições à API:
+```bash
+curl --request POST \
+  --url https://api.exemplo.com/proposals \
+  --header "Authorization: Bearer {access_token}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "campo": "valor"
+  }'
+```
+
+**Exemplo completo:**
+```bash
+curl --request POST \
+  --url https://api.exemplo.com/proposals \
+  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..." \
+  --header "Content-Type: application/json"
+```
 
 ### Renovação de Tokens
 
-_Conteúdo a ser preenchido em breve_
+<Info>
+  Os tokens de acesso têm validade de **1 hora** (3600 segundos).
+</Info>
+
+Quando o token expirar, você precisará solicitar um novo token seguindo o mesmo processo descrito acima. Recomendamos:
+
+- **Implementar renovação automática:** Configure sua aplicação para solicitar um novo token antes da expiração
+- **Tratar erros 401:** Se receber erro 401 (Unauthorized), solicite um novo token e tente novamente
+- **Cache inteligente:** Armazene o token e reutilize-o enquanto estiver válido
+
+**Exemplo de lógica de renovação:**
+```javascript
+let tokenCache = {
+  token: null,
+  expiresAt: null
+};
+
+async function getValidToken() {
+  const now = Date.now();
+  
+  // Renovar se não existe token ou está próximo de expirar (buffer de 5 min)
+  if (!tokenCache.token || tokenCache.expiresAt - now < 300000) {
+    const response = await requestNewToken();
+    tokenCache.token = response.access_token;
+    tokenCache.expiresAt = now + (response.expires_in * 1000);
+  }
+  
+  return tokenCache.token;
+}
+```
 
 ## Ambientes
 
@@ -28,18 +107,47 @@ _Conteúdo a ser preenchido em breve_
 
 Utilize o ambiente de homologação durante o desenvolvimento e testes da sua integração. Este ambiente permite que você experimente todas as funcionalidades sem afetar dados reais.
 
-**API de Homologação (conectado o serviço):**
-
+**API de Homologação:**
 ```
 https://xxxxxxxx.dev.wincred.digital
 ```
+
+<Note>
+  As credenciais OAuth2 para homologação são diferentes das credenciais de produção. Entre em contato com a equipe para obter suas credenciais de desenvolvimento.
+</Note>
 
 ### Ambiente de Produção
 
 Quando seu aplicativo estiver pronto para ser lançado ao público, utilize as URLs do ambiente de produção para acessar as APIs em operação real.
 
-**API de Produção (conectado o serviço):**
-
+**API de Produção:**
 ```
 https://xxxxxxxxxxx.wincred.digital
 ```
+
+<Warning>
+  Certifique-se de testar completamente sua integração no ambiente de homologação antes de migrar para produção.
+</Warning>
+
+## Exemplo Completo
+
+Aqui está um exemplo completo do fluxo de autenticação e chamada à API:
+```bash
+# 1. Obter token
+TOKEN_RESPONSE=$(curl -s --request POST \
+  --url https://login.microsoftonline.com/637854d2-2eb0-4ae9-b875-c3f556941376/oauth2/v2.0/token \
+  --header "Content-Type: application/x-www-form-urlencoded" \
+  --data "client_id=f81fe02f-7dca-4798-a7cd-1de3c9c138e2&client_secret=${CLIENT_SECRET}&scope=1f2fe6fc-f765-4e84-8ff0-c41025d8ca35/.default&grant_type=client_credentials")
+
+# 2. Extrair access_token
+ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
+
+# 3. Fazer requisição à API
+curl --request GET \
+  --url https://api.exemplo.com/proposals \
+  --header "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+## Suporte
+
+Se você tiver dúvidas sobre autenticação ou precisar de suas credenciais, entre em contato com a equipe técnica.
