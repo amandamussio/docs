@@ -55,6 +55,9 @@
                       "e-consignado/casos-de-uso/contratação-ativa/consultas/03-consultar-status-da-proposta",
                       "e-consignado/casos-de-uso/contratação-ativa/consultas/04-consultar-cotações-disponíveis"
                     ]
+                  },
+                  {
+                    "group": "Webhooks e Eventos"
                   }
                 ]
               }
