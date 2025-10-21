@@ -71,11 +71,7 @@
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "Entre em Contato",
-          "href": "mailto:tech@wincred.digital",
-          "icon": "envelope"
-        }
+       
       ]
     }
   },
