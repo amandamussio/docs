@@ -75,6 +75,7 @@ Todos os webhooks da Wincred utilizam o método HTTP POST para enviar as notific
 Seu endpoint deve estar preparado para:
 
 - Aceitar requisições POST
+- Processar os headers enviados
 - Processar o payload JSON no corpo da requisição
 - Retornar uma resposta HTTP apropriada (idealmente 200 OK)
 
@@ -173,7 +174,6 @@ Todos os eventos de webhook possuem a seguinte estrutura básica:
 ```json
 {
   "codigoRequisicao": "string",
-  "endpoint": "string",
   "payload": {}
 }
 ```
