@@ -15,9 +15,7 @@
         "groups": [
           {
             "group": "Visão Geral",
-            "pages": [
-              "index"
-            ]
+            "pages": ["index"]
           },
           {
             "group": "Comece por Aqui",
@@ -27,16 +25,13 @@
             ]
           }
         ]
-        
       },
       {
         "tab": "E-Consignado",
         "groups": [
           {
             "group": "Guia Inicial",
-            "pages": [
-              "e-consignado/introducao"
-            ]
+            "pages": ["e-consignado/introducao"]
           },
           {
             "group": "Referências de API"
@@ -47,12 +42,20 @@
               {
                 "group": "Contratação Ativa",
                 "pages": [
-                  "e-consignado/casos-de-uso/contratação-ativa/introdução-contratação-ativa",
-                  "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/01-simular-propostas",
-                  "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/02-enviar-proposta-escolhida-para-aprovação",
-                  "e-consignado/casos-de-uso/contratação-ativa/consultas/03-consultar-status-da-proposta",
-                  "e-consignado/casos-de-uso/contratação-ativa/consultas/04-consultar-cotações-disponíveis",
-                  "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos"
+                  {
+                    "group": "Criar Simulação",
+                    "pages": [
+                      "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/01-simular-propostas",
+                      "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/02-enviar-proposta-escolhida-para-aprovação"
+                    ]
+                  },
+                  {
+                    "group": "consultar",
+                    "pages": [
+                      "e-consignado/casos-de-uso/contratação-ativa/consultas/03-consultar-status-da-proposta",
+                      "e-consignado/casos-de-uso/contratação-ativa/consultas/04-consultar-cotações-disponíveis"
+                    ]
+                  }
                 ]
               }
             ]
@@ -62,7 +65,7 @@
     ],
     "global": {
       "anchors": [
-         {
+        {
           "anchor": "Entre em Contato",
           "href": "mailto:tech@wincred.digital",
           "icon": "envelope"
@@ -75,8 +78,7 @@
     "dark": "/logo/wincred-logo-dark.svg"
   },
   "navbar": {
-    "links": [
-    ],
+    "links": [],
     "primary": {
       "type": "button",
       "label": "Suporte",
@@ -85,16 +87,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
-  "footer": {
-  }
+  "footer": {}
 }
