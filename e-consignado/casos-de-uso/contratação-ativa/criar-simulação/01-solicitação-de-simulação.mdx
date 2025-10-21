@@ -1,0 +1,22 @@
+---
+title: "01 - Solicitação de Simulação"
+---
+
+O primeiro passo para oferecer crédito nesta modalidade é coletar os dados essenciais do trabalhador telefone, cpf e **coletar a autorização do trabalhador** para consulta dos seus dados.
+
+A Wincred disponibiliza um endpoint **assíncrono** que abstrai toda a complexidade do processo:
+
+- Consulta dos dados do trabalhador na DATAPREV
+- Consulta automática dos vínculos empregatícios
+- Cálculo das condições de crédito disponíveis
+
+<Note>
+⚠️ **Importante:** Este processo requer autorização expressa do trabalhador conforme LGPD. O trabalhador receberá uma notificação para autorizar a consulta de seus dados.
+</Note>
+
+
+---
+
+## Endpoint
+
+Para executar os passos iniciais da contratação ativa, lembre-se de ter seguido o processo de [autenticação](/comece-por-aqui/autenticação).

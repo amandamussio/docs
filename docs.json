@@ -48,8 +48,11 @@
                 "group": "Contratação Ativa",
                 "pages": [
                   "e-consignado/casos-de-uso/contratação-ativa/introdução-contratação-ativa",
-                  "e-consignado/casos-de-uso/contratação-ativa/01-solicitação-de-simulação",
-                  "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos.mdx"
+                  "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/01-simular-propostas",
+                  "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/02-enviar-proposta-escolhida-para-aprovação",
+                  "e-consignado/casos-de-uso/contratação-ativa/consultas/03-consultar-status-da-proposta",
+                  "e-consignado/casos-de-uso/contratação-ativa/consultas/04-consultar-cotações-disponíveis",
+                  "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos"
                 ]
               }
             ]
