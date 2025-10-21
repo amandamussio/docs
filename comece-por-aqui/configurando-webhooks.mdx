@@ -1,0 +1,190 @@
+---
+title: Configurando Webhooks
+description: Configure webhooks para receber notificações em tempo real sobre eventos do E-Consignado Trabalhador
+---
+
+## Configuração de Webhooks
+
+Para implementar os serviços do E-Consignado, você precisa configurar uma URL para receber os eventos via webhook. Esta configuração permite que a Wincred notifique seu sistema automaticamente sobre mudanças de status e atualizações importantes.
+
+### Requisitos de Configuração
+
+Para configurar seus webhooks, você precisa:
+
+<Steps>
+  <Step title="Desenvolver uma URL para recebimento">
+    Crie um endpoint em seu sistema que esteja preparado para receber
+    requisições HTTP do tipo POST, a Wincred enviará os eventos para essa URL, com o tipo do evento no Header e o payload no corpo da requisição.
+  </Step>
+  <Step title="Configurar ambientes separados">
+    Defina URLs distintas para homologação (testes) e produção (operação real)
+  </Step>
+  <Step title="Implementar autenticação">
+    Escolha um método de autenticação aceito pela Wincred para garantir a
+    segurança das comunicações
+  </Step>
+  <Step title="Informar as credenciais à Wincred">
+    Envie as informações da URL e do método de autenticação escolhido para a
+    equipe da Wincred
+  </Step>
+</Steps>
+
+<Note>
+  Após fornecer suas configurações, a equipe da Wincred irá parametrizar o
+  sistema para enviar os webhooks para suas URLs.
+</Note>
+
+---
+
+## 1. URL do Webhook
+
+Você deve desenvolver um endpoint público que receberá as notificações via webhook. Este endpoint será utilizado para a comunicação entre seu sistema e a Wincred através de eventos automáticos.
+
+**Exemplo de estrutura:**
+
+```
+https://seu-dominio.com.br/webhooks/wincred
+```
+
+---
+
+## 2. Ambientes
+
+É essencial configurar URLs diferentes para cada ambiente. Isso garante que os testes não interfiram com dados de produção e vice-versa.
+
+### Ambiente de Homologação (Desenvolvimento e Testes)
+
+O ambiente de homologação deve ser usado durante todo o processo de desenvolvimento e testes da sua integração.
+
+**Características:**
+
+- Dados fictícios e de teste
+- Sem impacto em operações reais
+- Ideal para validar sua implementação
+
+**Exemplo de URL:**
+
+```
+https://homolog.seu-dominio.com.br/webhooks/wincred
+```
+
+ou
+
+```
+https://seu-dominio.dev.br/webhooks/wincred
+```
+
+## 3. Método de Chamada
+
+Todos os webhooks da Wincred utilizam o método HTTP POST para enviar as notificações.
+
+Seu endpoint deve estar preparado para:
+
+- Aceitar requisições POST
+- Processar o payload JSON no corpo da requisição
+- Retornar uma resposta HTTP apropriada (idealmente 200 OK)
+
+---
+
+## 4. Autenticação
+
+Para garantir a segurança das comunicações, você deve definir um método de autenticação. A Wincred suporta os seguintes métodos:
+
+| Método de Autenticação | Tipo da Chave | Exemplo de Token                   |
+| ---------------------- | ------------- | ---------------------------------- |
+| Bearer Token           | Authorization | Bearer eyJhbGciOiJIUzI1CI6IkpXVCJ9 |
+| API Key                | API-Key       | 1234567890abcdef1234567890abcdef   |
+| Basic Authentication   | Authorization | Basic dXNlcm5hbWU6cGFzc3dvcmQ      |
+| X-API-Key              | X-API-Key     | 0987654321fedcba0987654321fedcba   |
+| JWT (JSON Web Token)   | Authorization | Bearer eyJhbGciOiJIUzI1NiIs        |
+
+<Tip>
+  Recomendamos o uso de Bearer Token ou JWT para maior segurança e facilidade de
+  implementação.
+</Tip>
+
+### Como funciona
+
+1. Você escolhe um método de autenticação da tabela acima
+2. Gera as credenciais necessárias (token, API key, etc.)
+3. Implementa a validação dessas credenciais em seu endpoint
+4. Informa o método escolhido e as credenciais para a equipe da Wincred
+5. A Wincred configura o sistema para incluir a autenticação em cada webhook enviado
+
+---
+
+## Enviando suas Credenciais
+
+Após configurar seus endpoints e definir o método de autenticação, você deve enviar as informações para a equipe de integração da Wincred.
+
+### Email de Configuração
+
+Envie um email para **tech@wincred.digital** com as seguintes informações:
+
+<CodeGroup>
+
+```text Modelo de Email
+Para: tech@wincred.digital
+Assunto: Integração - Originador [Nome do seu Originador]
+
+Olá equipe Wincred,
+
+Segue as configurações de webhook para integração:
+
+ORIGINADOR: [Nome da sua empresa/originador]
+
+AMBIENTE DE HOMOLOGAÇÃO:
+URL: [url completa do webhook de homologação]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de homologação]
+
+AMBIENTE DE PRODUÇÃO:
+URL: [url completa do webhook de produção]
+Método de autenticação: [Bearer Token / API Key / etc]
+Credencial: [seu token/chave de produção]
+
+OBSERVAÇÕES:
+[Qualquer informação adicional relevante]
+
+Aguardo retorno para prosseguirmos com os testes.
+
+Atenciosamente,
+[Seu nome]
+[Sua empresa]
+```
+</CodeGroup>
+
+Depois de enviar o email:
+
+1. **Aguarde confirmação** - A equipe Wincred confirmará o recebimento
+2. **Validação técnica** - Será feita uma validação das URLs e credenciais
+3. **Testes iniciais** - A equipe enviará webhooks de teste para homologação
+4. **Ativação** - Após validação bem-sucedida, o ambiente será ativado
+
+<Warning>
+  Tempo de processamento: A configuração geralmente leva de 1 a 2 dias úteis.
+  Para integrações urgentes, mencione no email.
+</Warning>
+
+---
+
+## Eventos de Webhook
+
+Ao interagir com as APIs do E-Consignado Trabalhador, a Wincred enviará automaticamente eventos para sua URL de webhook configurada. Cada evento notifica sobre uma ação específica ou mudança de status.
+
+### Estrutura Padrão dos Eventos
+
+Todos os eventos de webhook possuem a seguinte estrutura básica:
+
+```json
+{
+  "codigoRequisicao": "string",
+  "endpoint": "string",
+  "payload": {}
+}
+```
+
+**Campos:**
+
+- `codigoRequisicao`: Identificador único da requisição que gerou este webhook. Este mesmo código é retornado na resposta síncrona da API
+- `payload`: Conteúdo da resposta, idêntico ao retorno das APIs da DATAPREV

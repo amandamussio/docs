@@ -18,8 +18,16 @@
             "pages": [
               "index"
             ]
+          },
+          {
+            "group": "Comece por Aqui",
+            "pages": [
+              "comece-por-aqui/autenticação",
+              "comece-por-aqui/configurando-webhooks"
+            ]
           }
         ]
+        
       },
       {
         "tab": "E-Consignado",
@@ -28,18 +36,6 @@
             "group": "Guia Inicial",
             "pages": [
               "e-consignado/introducao"
-            ]
-          },
-          {
-            "group": "Guia do Desenvolvedor",
-            "pages": [
-              "e-consignado/guia-do-desenvolvedor/autenticação",
-              {
-                "group": "Webhook e eventos",
-                "pages": [
-                  "e-consignado/guia-do-desenvolvedor/webhooks-e-eventos/dataprev"
-                ]
-              }
             ]
           },
           {
