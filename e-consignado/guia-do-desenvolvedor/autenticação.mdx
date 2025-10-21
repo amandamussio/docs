@@ -39,7 +39,7 @@ Substitua os placeholders `{tenant_id}`, `{client_id}`, `{client_secret}` e `{sc
 ```json
 {
   "token_type": "Bearer",
-  "expires_in": 3599,`
+  "expires_in": 3599,
   "access_token": "eyJ0eXAi......"
 }
 ```
@@ -55,14 +55,6 @@ curl --request POST \
   --data '{
     "campo": "valor"
   }'
-```
-
-**Exemplo completo:**
-```bash
-curl --request POST \
-  --url https://api.exemplo.com/proposals \
-  --header "Authorization: Bearer eyJ0eX......" \
-  --header "Content-Type: application/json"
 ```
 
 ### Renovação de Tokens
