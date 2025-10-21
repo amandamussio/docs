@@ -57,7 +57,10 @@
                     ]
                   },
                   {
-                    "group": "Webhooks e Eventos"
+                    "group": "Webhooks e Eventos",
+                    "pages": [
+                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos"
+                    ]
                   }
                 ]
               }
