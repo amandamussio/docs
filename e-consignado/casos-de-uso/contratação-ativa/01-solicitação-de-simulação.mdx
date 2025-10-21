@@ -1,0 +1,85 @@
+---
+title: "01 - Solicitação de Simulação"
+---
+
+O primeiro passo para oferecer crédito nesta modalidade é coletar os dados essenciais do trabalhador telefone, cpf e **coletar a autorização do trabalhador** para consulta dos seus dados.
+
+A Wincred disponibiliza um endpoint **assíncrono** que abstrai toda a complexidade do processo:
+
+- Consulta dos dados do trabalhador na DATAPREV
+- Consulta automática dos vínculos empregatícios
+- Cálculo das condições de crédito disponíveis
+
+<Note>
+⚠️ **Importante:** Este processo requer autorização expressa do trabalhador conforme LGPD. O trabalhador receberá uma notificação para autorizar a consulta de seus dados.
+</Note>
+
+
+---
+
+## Endpoint
+
+Para executar os passos iniciais da contratação ativa, lembre-se de ter seguido o processo de [autenticação](/comece-por-aqui/autenticação).
+
+### Criar Solicitação de Simulação
+
+Inicia o processo de simulação de crédito consignado para um trabalhador.
+```http
+POST /e-consignado/active-hiring/simulation-requests
+```
+
+**Headers Obrigatórios:**
+```
+Authorization: Bearer {access_token}
+Content-Type: application/json
+```
+
+---
+
+## Requisição
+
+### Exemplo
+```bash
+curl --request POST \
+  --url https://api.wincred.com/e-consignado/active-hiring/simulation-requests \
+  --header "Authorization: Bearer {access_token}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "externalId": "REQ-2024-00123",
+    "cpf": "12345678900",
+    "telefone": "11999999999",
+  }'`
+```
+
+### Parâmetros
+
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|-----------|------|-------------|-----------|
+| `externalId` | string | Sim | Identificador único da solicitação no seu sistema. Útil para rastreamento e idempotência |
+| `cpf` | string | Sim | CPF do trabalhador (somente números, 11 dígitos) |
+| `telefone` | string | Sim | Telefone de contato do trabalhador (somente números, DDD + número) |
+
+---
+
+## Respostas
+
+### Sucesso (200 Created)
+
+A solicitação foi criada com sucesso e o processo de autorização foi iniciado.
+
+---
+
+### Erros
+
+#### 422 Bad Request
+
+Dados inválidos ou ausentes na requisição.
+
+**Erros Comuns:**
+- `INVALID_CPF` - CPF inválido ou incorretamente formatado
+- `INVALID_PHONE` - Telefone inválido
+- `DUPLICATE_EXTERNAL_ID` - ExternalId já foi utilizado
+
+#### 401 Unauthorized
+
+Token de acesso inválido ou expirado.

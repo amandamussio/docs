@@ -48,8 +48,7 @@
                 "group": "Contratação Ativa",
                 "pages": [
                   "e-consignado/casos-de-uso/contratação-ativa/introdução-contratação-ativa",
-                  "e-consignado/casos-de-uso/contratação-ativa/01-autorização-para-consulta-de-dados",
-                  "e-consignado/casos-de-uso/contratação-ativa/02-consulta-lista-vínculos-do-trabalhador"
+                  "e-consignado/casos-de-uso/contratação-ativa/01-autorização-para-consulta-de-dados"
                 ]
               }
             ]
