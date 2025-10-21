@@ -1,6 +1,7 @@
 ---
-title: Autenticação e Ambientes
-description: Configure o acesso às nossas APIs nos ambientes de homologação e produção
+title: Autenticação
+description: Configure o acesso às nossas APIs utilizando OAuth 2.0
+icon: "lock"
 ---
 
 ## Autenticação
@@ -14,13 +15,9 @@ Para autenticar suas requisições, você precisará das seguintes credenciais, 
 | Parâmetro | Descrição |
 |-----------|-----------|
 | `client_id` | Identificador único da sua aplicação |
-| `client_secret` | Chave secreta da aplicação (armazenada no Bitwarden) |
+| `client_secret` | Chave secreta da aplicação (Enviada via Bitwarden) |
 | `tenant_id` | Identificador do tenant no Azure AD |
 | `scope` | Escopo de acesso no formato `{resource}/.default` |
-
-<Warning>
-  O `client_secret` é sensível e deve ser mantido em segredo. Nunca o exponha em código client-side ou repositórios públicos.
-</Warning>
 
 ### Como Autenticar
 
@@ -42,8 +39,8 @@ Substitua os placeholders `{tenant_id}`, `{client_id}`, `{client_secret}` e `{sc
 ```json
 {
   "token_type": "Bearer",
-  "expires_in": 3599,
-  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+  "expires_in": 3599,`
+  "access_token": "eyJ0eXAi......"
 }
 ```
 
@@ -64,7 +61,7 @@ curl --request POST \
 ```bash
 curl --request POST \
   --url https://api.exemplo.com/proposals \
-  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..." \
+  --header "Authorization: Bearer eyJ0eX......" \
   --header "Content-Type: application/json"
 ```
 
@@ -79,75 +76,3 @@ Quando o token expirar, você precisará solicitar um novo token seguindo o mesm
 - **Implementar renovação automática:** Configure sua aplicação para solicitar um novo token antes da expiração
 - **Tratar erros 401:** Se receber erro 401 (Unauthorized), solicite um novo token e tente novamente
 - **Cache inteligente:** Armazene o token e reutilize-o enquanto estiver válido
-
-**Exemplo de lógica de renovação:**
-```javascript
-let tokenCache = {
-  token: null,
-  expiresAt: null
-};
-
-async function getValidToken() {
-  const now = Date.now();
-  
-  // Renovar se não existe token ou está próximo de expirar (buffer de 5 min)
-  if (!tokenCache.token || tokenCache.expiresAt - now < 300000) {
-    const response = await requestNewToken();
-    tokenCache.token = response.access_token;
-    tokenCache.expiresAt = now + (response.expires_in * 1000);
-  }
-  
-  return tokenCache.token;
-}
-```
-
-## Ambientes
-
-### Ambiente de Homologação
-
-Utilize o ambiente de homologação durante o desenvolvimento e testes da sua integração. Este ambiente permite que você experimente todas as funcionalidades sem afetar dados reais.
-
-**API de Homologação:**
-```
-https://xxxxxxxx.dev.wincred.digital
-```
-
-<Note>
-  As credenciais OAuth2 para homologação são diferentes das credenciais de produção. Entre em contato com a equipe para obter suas credenciais de desenvolvimento.
-</Note>
-
-### Ambiente de Produção
-
-Quando seu aplicativo estiver pronto para ser lançado ao público, utilize as URLs do ambiente de produção para acessar as APIs em operação real.
-
-**API de Produção:**
-```
-https://xxxxxxxxxxx.wincred.digital
-```
-
-<Warning>
-  Certifique-se de testar completamente sua integração no ambiente de homologação antes de migrar para produção.
-</Warning>
-
-## Exemplo Completo
-
-Aqui está um exemplo completo do fluxo de autenticação e chamada à API:
-```bash
-# 1. Obter token
-TOKEN_RESPONSE=$(curl -s --request POST \
-  --url https://login.microsoftonline.com/637854d2-2eb0-4ae9-b875-c3f556941376/oauth2/v2.0/token \
-  --header "Content-Type: application/x-www-form-urlencoded" \
-  --data "client_id=f81fe02f-7dca-4798-a7cd-1de3c9c138e2&client_secret=${CLIENT_SECRET}&scope=1f2fe6fc-f765-4e84-8ff0-c41025d8ca35/.default&grant_type=client_credentials")
-
-# 2. Extrair access_token
-ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
-
-# 3. Fazer requisição à API
-curl --request GET \
-  --url https://api.exemplo.com/proposals \
-  --header "Authorization: Bearer ${ACCESS_TOKEN}"
-```
-
-## Suporte
-
-Se você tiver dúvidas sobre autenticação ou precisar de suas credenciais, entre em contato com a equipe técnica.
