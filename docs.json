@@ -43,17 +43,18 @@
                 "group": "Contratação Ativa",
                 "pages": [
                   {
-                    "group": "Criar Simulação",
+                    "group": "Fluxo Principal",
                     "pages": [
-                      "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/01-simular-propostas",
-                      "e-consignado/casos-de-uso/contratação-ativa/criar-simulação/02-enviar-proposta-escolhida-para-aprovação"
+                      "e-consignado/casos-de-uso/contratação-ativa/fluxo-principal/01-consultar-vínculos",
+                      "e-consignado/casos-de-uso/contratação-ativa/fluxo-principal/02-simular-propostas",
+                      "e-consignado/casos-de-uso/contratação-ativa/fluxo-principal/03-enviar-proposta-escolhida-para-aprovação"
                     ]
                   },
                   {
-                    "group": "Consultar",
+                    "group": "GETs - Disponíveis",
                     "pages": [
-                      "e-consignado/casos-de-uso/contratação-ativa/consultas/03-consultar-status-da-proposta",
-                      "e-consignado/casos-de-uso/contratação-ativa/consultas/04-consultar-cotações-disponíveis"
+                      "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-status-da-proposta",
+                      "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-cotações-disponíveis"
                     ]
                   },
                   {
