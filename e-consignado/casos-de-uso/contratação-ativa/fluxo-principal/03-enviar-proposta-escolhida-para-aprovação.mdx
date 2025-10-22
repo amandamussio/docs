@@ -1,11 +1,102 @@
 ---
-title: "02 - Enviar Proposta Escolhida para Aprovação"
+title: "Enviar Proposta para Aprovação"
+description: "Submeta a proposta escolhida pelo trabalhador para análise e aprovação"
 ---
 
-Em seguida, após o trabalhador escolher uma das propostas simuladas, envie a proposta escolhida para aprovação, em conjunto com os dados bancários.
+<Info>
+Este é um endpoint **assíncrono**. A resposta retornará imediatamente com um identificador para acompanhamento do status.
+</Info>
 
----
+Após o trabalhador escolher uma das propostas simuladas, envie a proposta selecionada para aprovação juntamente com os dados bancários para desembolso.
+
+## Fluxo de Aprovação
+
+<Steps>
+  <Step title="Validação da Proposta">
+    Verificação dos dados da proposta escolhida e conformidade com os parâmetros simulados
+  </Step>
+  
+  <Step title="Validação Bancária">
+    Confirmação da titularidade e validade da conta bancária informada
+    Obs: Nessa etapa será feita um pix de R$0,01 para validação da conta.
+  </Step>
+  
+  <Step title="KYC (Know Your Customer)">
+    Análise de conformidade regulatória e prevenção à lavagem de dinheiro
+  </Step>
+  
+  <Step title="Geração da CCB">
+    Criação automática da Cédula de Crédito Bancário com validade jurídica
+  </Step>
+</Steps>
+
+## Estrutura de Dados
+```json
+{
+  "traceId": "uuid",
+  "propostaId": "string",
+  "dadosBancarios": {
+    "banco": "string",
+    "agencia": "string",
+    "conta": "string",
+    "tipoConta": "string"
+  }
+}
+```
+
+### Descrição dos Campos
+
+<ParamField path="traceId" type="UUID" required>
+  Identificador único da requisição para rastreabilidade
+</ParamField>
+
+<ParamField path="propostaId" type="string" required>
+  ID da proposta escolhida, retornado na etapa de simulação
+</ParamField>
+
+<ParamField path="dadosBancarios" type="object" required>
+  Dados bancários para desembolso do crédito
+  
+  <Expandable title="properties">
+    <ParamField path="banco" type="string" required>
+      Código do banco (3 dígitos)
+    </ParamField>
+    
+    <ParamField path="agencia" type="string" required>
+      Número da agência (sem dígito verificador)
+    </ParamField>
+    
+    <ParamField path="conta" type="string" required>
+      Número da conta com dígito verificador
+    </ParamField>
+    
+    <ParamField path="tipoConta" type="string" required>
+      Tipo de conta: `CORRENTE` ou `POUPANCA`
+    </ParamField>
+  </Expandable>
+</ParamField>
 
 ## Endpoint
 
-Em breve.
+<Card title="Endpoint em Desenvolvimento" icon="code">
+  Este endpoint estará disponível em breve. Entre em contato com o time de integrações para mais informações.
+</Card>
+
+<Note>
+**Precisa integrar agora?**  
+Entre em contato com nosso time técnico: [integracao@wincred.com.br](mailto:integracao@wincred.com.br)
+</Note>
+
+## Resposta Esperada
+```json
+{
+  "traceId": "550e8400-e29b-41d4-a716-446655440000",
+  "status": "EM_ANALISE",
+  "protocolo": "PROP-2025-001234",
+  "previsaoRetorno": "2025-10-22T16:30:00-03:00"
+}
+```
+
+## Próximos Passos
+
+Após o envio da proposta, utilize o endpoint de [Consultar Status da Proposta](/api-reference/consultar-status) para acompanhar o andamento da análise.
