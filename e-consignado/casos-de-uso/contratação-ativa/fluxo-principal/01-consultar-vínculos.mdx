@@ -7,18 +7,36 @@ O primeiro passo para oferecer crédito na modalidade de consignado privado é c
 
 A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade do processo de consulta, realizando automaticamente:
 
+- Envia os dados da Autorização de consulta para a DATAPREV
 - Consulta dos dados do trabalhador na DATAPREV
 - Validação e recuperação dos vínculos empregatícios ativos
 
 ## Fluxo de Autorização
 
 <Warning>
-Antes de realizar a consulta, é obrigatório:
+Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e autorizações pelo originador:
 
-- Coletar os dados do trabalhador (CPF, telefone, data de nascimento)
-- Obter autorização expressa do trabalhador para consulta de seus dados
-- Registrar o termo de aceite com localização e timestamp
+**Dados do trabalhador:**
+- CPF (apenas números)
+- Telefone
+- Data de nascimento
+
+**Autorização expressa:**
+- Obter consentimento explícito do trabalhador para consulta de seus dados na DATAPREV
+
+**Termo de aceite:**
+- Utilizar o modelo de termo disponibilizado pela Wincred
+- Implementar via front-end web ou mobile
+- Capturar obrigatoriamente:
+  - Localização (latitude e longitude)
+  - Data e hora da assinatura (ISO 8601)
+  - Cidade onde o termo foi assinado
+  - Session ID da sessão de assinatura
 </Warning>
+
+<Info>
+A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo conformidade com a LGPD e requisitos regulatórios.
+</Info>
 
 ## Estrutura de Dados
 ```json
