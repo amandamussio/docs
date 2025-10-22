@@ -11,8 +11,8 @@ A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade 
 - Consulta dos dados do trabalhador na DATAPREV
 - Validação e recuperação dos vínculos empregatícios ativos
 
-## Fluxo de Autorização
 
+## Pré-requisitos
 <Warning>
 Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e autorizações pelo originador:
 
@@ -38,25 +38,34 @@ Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e
 A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo conformidade com a LGPD e requisitos regulatórios.
 </Info>
 
-## Estrutura de Dados
-```json
-{
-  "traceId": "uuid",
-  "cpf": "string",
-  "dataNascimento": "string (YYYY-MM-DD)",
-  "cidadeAssinaturaTermo": "string",
-  "dataHoraAssinaturaTermo": "string (ISO 8601)",
-  "sessionIdAssinaturaTermo": "string",
-  "localizacaoAssinaturaTermo": {
-    "latitude": "string",
-    "longitude": "string"
-  }
-}
+## Guia de Integração
+
+## Endpoint: `POST /api/v1/e-consignado/consultar-vinculos`
+
+### Exemplo de Requisição
+```
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos" \
+-H "Content-Type: application/json" \ 
+-H "Authorization: Bearer {seu_token_de_acesso}" \
+-d '{
+  "chaveIdentificadora": "123e4567-e89b-12d3-a456 -426614174000",
+  "cpf": "12345678900",
+  "dataNascimento": "1980-01-01",
+  "assinaturaTermo": {
+    "cidade": "São Paulo",
+    "dataHora": "2024-01-01T10:00:00Z",
+    "sessionId": "sessao-abc-123",
+    "localizacao": {
+      "latitude": "-23.55052",
+      "longitude": "-46.633308"
+    }
+  },
+}'
 ```
 
 ### Descrição dos Campos
 
-<ParamField path="traceId" type="UUID" required>
+<ParamField path="chaveIdentificadora" type="UUID" required>
   Identificador único da requisição para rastreabilidade
 </ParamField>
 
@@ -68,19 +77,19 @@ A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo
   Data de nascimento no formato YYYY-MM-DD
 </ParamField>
 
-<ParamField path="cidadeAssinaturaTermo" type="string" required>
+<ParamField path="cidade" type="string" required>
   Cidade onde o termo foi assinado
 </ParamField>
 
-<ParamField path="dataHoraAssinaturaTermo" type="string" required>
+<ParamField path="dataHora" type="string" required>
   Data e hora da assinatura no formato ISO 8601
 </ParamField>
 
-<ParamField path="sessionIdAssinaturaTermo" type="string" required>
+<ParamField path="sessionId" type="string" required>
   Identificador da sessão de assinatura
 </ParamField>
 
-<ParamField path="localizacaoAssinaturaTermo" type="object" required>
+<ParamField path="localizacao" type="object" required>
   Coordenadas geográficas da assinatura
   
   <Expandable title="properties">
