@@ -1,0 +1,77 @@
+---
+title: "Consultar Vínculos"
+description: "Endpoint para consulta de vínculos empregatícios na DATAPREV"
+---
+
+O primeiro passo para oferecer crédito na modalidade de consignado privado é coletar os dados essenciais do trabalhador e obter sua autorização para consulta dos vínculos empregatícios.
+
+A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade do processo de consulta, realizando automaticamente:
+
+- Consulta dos dados do trabalhador na DATAPREV
+- Validação e recuperação dos vínculos empregatícios ativos
+
+## Fluxo de Autorização
+
+<Warning>
+Antes de realizar a consulta, é obrigatório:
+
+- Coletar os dados do trabalhador (CPF, telefone, data de nascimento)
+- Obter autorização expressa do trabalhador para consulta de seus dados
+- Registrar o termo de aceite com localização e timestamp
+</Warning>
+
+## Estrutura de Dados
+```json
+{
+  "traceId": "uuid",
+  "cpf": "string",
+  "dataNascimento": "string (YYYY-MM-DD)",
+  "cidadeAssinaturaTermo": "string",
+  "dataHoraAssinaturaTermo": "string (ISO 8601)",
+  "sessionIdAssinaturaTermo": "string",
+  "localizacaoAssinaturaTermo": {
+    "latitude": "string",
+    "longitude": "string"
+  }
+}
+```
+
+### Descrição dos Campos
+
+<ParamField path="traceId" type="UUID" required>
+  Identificador único da requisição para rastreabilidade
+</ParamField>
+
+<ParamField path="cpf" type="string" required>
+  CPF do trabalhador (apenas números)
+</ParamField>
+
+<ParamField path="dataNascimento" type="string" required>
+  Data de nascimento no formato YYYY-MM-DD
+</ParamField>
+
+<ParamField path="cidadeAssinaturaTermo" type="string" required>
+  Cidade onde o termo foi assinado
+</ParamField>
+
+<ParamField path="dataHoraAssinaturaTermo" type="string" required>
+  Data e hora da assinatura no formato ISO 8601
+</ParamField>
+
+<ParamField path="sessionIdAssinaturaTermo" type="string" required>
+  Identificador da sessão de assinatura
+</ParamField>
+
+<ParamField path="localizacaoAssinaturaTermo" type="object" required>
+  Coordenadas geográficas da assinatura
+  
+  <Expandable title="properties">
+    <ParamField path="latitude" type="string" required>
+      Latitude em formato decimal
+    </ParamField>
+    
+    <ParamField path="longitude" type="string" required>
+      Longitude em formato decimal
+    </ParamField>
+  </Expandable>
+</ParamField>
