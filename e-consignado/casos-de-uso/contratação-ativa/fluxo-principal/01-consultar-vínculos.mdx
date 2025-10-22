@@ -1,111 +1,249 @@
 ---
 title: "01 - Consultar Vínculos"
-description: "Endpoint para consulta de vínculos empregatícios na DATAPREV"
+description: "Endpoint para consulta de vínculos empregatícios"
 ---
+
+## Visão Geral
 
 O primeiro passo para oferecer crédito na modalidade de consignado privado é coletar os dados essenciais do trabalhador e obter sua autorização para consulta dos vínculos empregatícios.
 
 A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade do processo de consulta, realizando automaticamente:
 
-- Envia os dados da Autorização de consulta para a DATAPREV
+- Envio dos dados da autorização de consulta para a DATAPREV
 - Consulta dos dados do trabalhador na DATAPREV
 - Validação e recuperação dos vínculos empregatícios ativos
 
+<Info>
+Este é um endpoint **assíncrono**. A resposta retorna imediatamente com um identificador, e você deve consultar o status posteriormente para obter o resultado.
+</Info>
+
+---
 
 ## Pré-requisitos
+
 <Warning>
 Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e autorizações pelo originador:
+</Warning>
 
-**Dados do trabalhador:**
-- CPF (apenas números)
-- Telefone
-- Data de nascimento
+### Dados do trabalhador
+- **CPF** (apenas números)
+- **Telefone**
+- **Data de nascimento**
 
-**Autorização expressa:**
+### Autorização expressa
 - Obter consentimento explícito do trabalhador para consulta de seus dados na DATAPREV
 
-**Termo de aceite:**
+### Termo de aceite
 - Utilizar o modelo de termo disponibilizado pela Wincred
 - Implementar via front-end web ou mobile
 - Capturar obrigatoriamente:
-  - Localização (latitude e longitude)
-  - Data e hora da assinatura (ISO 8601)
-  - Cidade onde o termo foi assinado
-  - Session ID da sessão de assinatura
-</Warning>
+  - **Localização** (latitude e longitude)
+  - **Data e hora** da assinatura (ISO 8601)
+  - **Cidade** onde o termo foi assinado
+  - **Session ID** da sessão de assinatura
 
-<Info>
+<Tip>
 A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo conformidade com a LGPD e requisitos regulatórios.
-</Info>
+</Tip>
 
-## Guia de Integração
+---
 
-## Endpoint: `POST /api/v1/e-consignado/consultar-vinculos`
+## Endpoint
+
+<ParamField path="POST" type="endpoint">
+  `/api/v1/e-consignado/consultar-vinculos`
+</ParamField>
+
+### Headers
+
+| Header | Tipo | Obrigatório | Descrição |
+|--------|------|-------------|-----------|
+| `Content-Type` | string | Sim | `application/json` |
+| `Authorization` | string | Sim | `Bearer {seu_token_de_acesso}` |
+
+---
+
+## Requisição
 
 ### Exemplo de Requisição
-```
+```bash
 curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos" \
--H "Content-Type: application/json" \ 
--H "Authorization: Bearer {seu_token_de_acesso}" \
--d '{
-  "chaveIdentificadora": "123e4567-e89b-12d3-a456 -426614174000",
-  "cpf": "12345678900",
-  "dataNascimento": "1980-01-01",
-  "assinaturaTermo": {
-    "cidade": "São Paulo",
-    "dataHora": "2024-01-01T10:00:00Z",
-    "sessionId": "sessao-abc-123",
-    "localizacao": {
-      "latitude": "-23.55052",
-      "longitude": "-46.633308"
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {seu_token_de_acesso}" \
+  -d '{
+    "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
+    "cpf": "12345678900",
+    "dataNascimento": "1980-01-01",
+    "telefone": "11987654321",
+    "assinaturaTermo": {
+      "cidade": "São Paulo",
+      "dataHora": "2024-01-01T10:00:00Z",
+      "sessionId": "sessao-abc-123",
+      "localizacao": {
+        "latitude": "-23.55052",
+        "longitude": "-46.633308"
+      }
     }
-  },
-}'
+  }'
 ```
 
-### Descrição dos Campos
+### Parâmetros da Requisição
 
-<ParamField path="chaveIdentificadora" type="UUID" required>
-  Identificador único da requisição para rastreabilidade
+<ParamField path="chaveIdentificadora" type="string (UUID)" required>
+  Identificador único da requisição para rastreabilidade e idempotência
 </ParamField>
 
 <ParamField path="cpf" type="string" required>
-  CPF do trabalhador (apenas números)
+  CPF do trabalhador (apenas números, sem formatação)
+  
+  **Exemplo:** `"12345678900"`
 </ParamField>
 
 <ParamField path="dataNascimento" type="string" required>
-  Data de nascimento no formato YYYY-MM-DD
+  Data de nascimento no formato ISO 8601 (YYYY-MM-DD)
+  
+  **Exemplo:** `"1980-01-01"`
+</ParamField>
+
+<ParamField path="telefone" type="string" required>
+  Telefone do trabalhador com DDD (apenas números)
+  
+  **Exemplo:** `"11987654321"`
 </ParamField>
 
 <ParamField path="assinaturaTermo" type="object" required>
-  Dados da assinatura do termo de aceite
+  Dados da assinatura do termo de aceite LGPD
   
-  <Expandable title="properties">
-   
-<ParamField path="cidade" type="string" required>
-  Cidade onde o termo foi assinado
-</ParamField>
-
-<ParamField path="dataHora" type="string" required>
-  Data e hora da assinatura no formato ISO 8601
-</ParamField>
-
-<ParamField path="sessionId" type="string" required>
-  Identificador da sessão de assinatura
-</ParamField>
-
-<ParamField path="localizacao" type="object" required>
-  Coordenadas geográficas da assinatura
-  
-  <Expandable title="properties">
-    <ParamField path="latitude" type="string" required>
-      Latitude em formato decimal
+  <Expandable title="Propriedades">
+    <ParamField path="cidade" type="string" required>
+      Cidade onde o termo foi assinado
+      
+      **Exemplo:** `"São Paulo"`
     </ParamField>
-    
-    <ParamField path="longitude" type="string" required>
-      Longitude em formato decimal
+
+    <ParamField path="dataHora" type="string" required>
+      Data e hora da assinatura no formato ISO 8601
+      
+      **Exemplo:** `"2024-01-01T10:00:00Z"`
+    </ParamField>
+
+    <ParamField path="sessionId" type="string" required>
+      Identificador único da sessão de assinatura
+      
+      **Exemplo:** `"sessao-abc-123"`
+    </ParamField>
+
+    <ParamField path="localizacao" type="object" required>
+      Coordenadas geográficas da assinatura
+      
+      <Expandable title="Propriedades">
+        <ParamField path="latitude" type="string" required>
+          Latitude em formato decimal
+          
+          **Exemplo:** `"-23.55052"`
+        </ParamField>
+        
+        <ParamField path="longitude" type="string" required>
+          Longitude em formato decimal
+          
+          **Exemplo:** `"-46.633308"`
+        </ParamField>
+      </Expandable>
     </ParamField>
   </Expandable>
 </ParamField>
-</Expandable>
-</ParamField>
+
+---
+
+## Resposta
+
+### Resposta de Sucesso (202 Accepted)
+
+A requisição foi aceita e está sendo processada de forma assíncrona.
+```json
+{
+  "success": true,
+  "message": "Consulta de vínculos iniciada com sucesso",
+  "data": {
+    "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
+    "status": "PROCESSANDO",
+    "dataConsulta": "2024-01-01T10:00:00Z"
+  }
+}
+```
+
+### Resposta de Erro (400 Bad Request)
+```json
+{
+  "success": false,
+  "message": "Dados inválidos",
+  "errors": [
+    {
+      "field": "cpf",
+      "message": "CPF inválido"
+    }
+  ]
+}
+```
+
+### Resposta de Erro (401 Unauthorized)
+```json
+{
+  "success": false,
+  "message": "Token de acesso inválido ou expirado"
+}
+```
+
+### Códigos de Status
+
+| Código | Descrição |
+|--------|-----------|
+| `202` | Requisição aceita e em processamento |
+| `400` | Dados inválidos na requisição |
+| `401` | Não autorizado - token inválido |
+| `422` | Erro de validação dos dados |
+| `500` | Erro interno do servidor |
+
+---
+
+## Próximos Passos
+
+<Steps>
+  <Step title="Aguardar processamento">
+    A consulta é processada de forma assíncrona. Aguarde alguns segundos antes de consultar o resultado.
+  </Step>
+  
+  <Step title="Consultar resultado">
+    Utilize o endpoint de consulta de status ou webhook para obter o resultado da consulta de vínculos.
+  </Step>
+  
+  <Step title="Analisar vínculos">
+    Com os vínculos retornados, você pode prosseguir para a próxima etapa do processo de consignado.
+  </Step>
+</Steps>
+
+<Card title="Próximo: Consultar Status" icon="arrow-right" href="/02-consultar-status">
+  Aprenda como consultar o status e resultado da consulta de vínculos
+</Card>
+
+---
+
+## Perguntas Frequentes
+
+<AccordionGroup>
+  <Accordion title="Quanto tempo demora o processamento?">
+    O processamento geralmente leva entre 5 a 30 segundos. Recomendamos aguardar pelo menos 10 segundos antes de consultar o status.
+  </Accordion>
+
+  <Accordion title="O que fazer se o CPF não for encontrado?">
+    Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando que não há vínculos ativos para aquele trabalhador.
+  </Accordion>
+
+  <Accordion title="Posso fazer múltiplas consultas simultâneas?">
+    Sim, você pode fazer múltiplas consultas simultâneas. Use a `chaveIdentificadora` única para rastrear cada requisição.
+  </Accordion>
+
+  <Accordion title="O termo de aceite é obrigatório?">
+    Sim, conforme a LGPD, é obrigatório obter o consentimento explícito do trabalhador antes de consultar seus dados.
+  </Accordion>
+</AccordionGroup>
