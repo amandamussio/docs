@@ -157,7 +157,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos
 
 ## Resposta
 
-### Resposta de Sucesso (202 Accepted)
+### Resposta de Sucesso (200 Accepted)
 
 A requisição foi aceita e está sendo processada de forma assíncrona.
 ```json
@@ -172,7 +172,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 }
 ```
 
-### Resposta de Erro (400 Bad Request)
+### Resposta de Erro (422 Bad Request)
 ```json
 {
   "success": false,
@@ -198,8 +198,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 
 | Código | Descrição |
 |--------|-----------|
-| `202` | Requisição aceita e em processamento |
-| `400` | Dados inválidos na requisição |
+| `200` | Requisição aceita e em processamento |
 | `401` | Não autorizado - token inválido |
 | `422` | Erro de validação dos dados |
 | `500` | Erro interno do servidor |
