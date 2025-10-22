@@ -167,7 +167,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 {
   "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
   "status": "PROCESSANDO",
-  "dataConsulta": "2024-01-01T10:00:00Z"
+  "dataSolicitacao": "2024-01-01T10:00:00Z"
 }
 ```
 
@@ -175,13 +175,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 
 ```json
 {
-  "message": "Dados inválidos",
-  "errors": [
-    {
-      "field": "cpf",
-      "message": "CPF inválido"
-    }
-  ]
+  "erro": "Dados inválidos",
 }
 ```
 
@@ -189,7 +183,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 
 ```json
 {
-  "message": "Token de acesso inválido ou expirado"
+  "erro": "Token de acesso inválido ou expirado",
 }
 ```
 
@@ -212,10 +206,11 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
     de consultar o resultado.
   </Step>
 
-  <Step title="Consultar resultado">
-    Utilize o endpoint de consulta de status ou webhook para obter o resultado
-    da consulta de vínculos.
-  </Step>
+{" "}
+<Step title="Consultar resultado">
+  Utilize o endpoint de consulta de status ou webhook para obter o resultado da
+  consulta de vínculos.
+</Step>
 
   <Step title="Analisar vínculos">
     Com os vínculos retornados, você pode prosseguir para a próxima etapa do
@@ -241,12 +236,14 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
   </Accordion>
 
 {" "}
+
 <Accordion title="O que fazer se o CPF não for encontrado?">
   Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando
   que não há vínculos ativos para aquele trabalhador.
 </Accordion>
 
 {" "}
+
 <Accordion title="Posso fazer múltiplas consultas simultâneas?">
   Sim, você pode fazer múltiplas consultas simultâneas. Use a
   `chaveIdentificadora` única para rastrear cada requisição.
