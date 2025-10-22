@@ -14,7 +14,9 @@ A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade 
 - Validação e recuperação dos vínculos empregatícios ativos
 
 <Info>
-Este é um endpoint **assíncrono**. A resposta retorna imediatamente com um identificador, e você deve consultar o status posteriormente para obter o resultado.
+  Este é um endpoint **assíncrono**. A resposta retorna imediatamente com um
+  identificador, e você deve consultar o status posteriormente para obter o
+  resultado.
 </Info>
 
 ---
@@ -22,15 +24,18 @@ Este é um endpoint **assíncrono**. A resposta retorna imediatamente com um ide
 ## Pré-requisitos
 
 <Warning>
-Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e autorizações pelo originador:
+  Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e
+  autorizações pelo originador:
 </Warning>
 
 ### Dados do trabalhador
+
 - **CPF**
 - **Telefone**
 - **Data de nascimento**
 
 ### Autorização expressa/Termo de aceite
+
 - Obter consentimento explícito do trabalhador para consulta de seus dados na DATAPREV
 - Utilizar o modelo de termo disponibilizado pela Wincred
 - Implementar via front-end web ou mobile
@@ -41,7 +46,8 @@ Antes de realizar a consulta, é obrigatória a captação dos seguintes dados e
   - **Session ID** da sessão de assinatura
 
 <Tip>
-A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo conformidade com a LGPD e requisitos regulatórios.
+  A Wincred disponibiliza um modelo de termo de aceite pronto para uso,
+  garantindo conformidade com a LGPD e requisitos regulatórios.
 </Tip>
 
 ---
@@ -54,16 +60,17 @@ A Wincred disponibiliza um modelo de termo de aceite pronto para uso, garantindo
 
 ### Headers
 
-| Header | Tipo | Obrigatório | Descrição |
-|--------|------|-------------|-----------|
-| `Content-Type` | string | Sim | `application/json` |
-| `Authorization` | string | Sim | `Bearer {seu_token_de_acesso}` |
+| Header          | Tipo   | Obrigatório | Descrição                      |
+| --------------- | ------ | ----------- | ------------------------------ |
+| `Content-Type`  | string | Sim         | `application/json`             |
+| `Authorization` | string | Sim         | `Bearer {seu_token_de_acesso}` |
 
 ---
 
 ## Requisição
 
 ### Exemplo de Requisição
+
 ```bash
 curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos" \
   -H "Content-Type: application/json" \
@@ -92,21 +99,17 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos
 </ParamField>
 
 <ParamField path="cpf" type="string" required>
-  CPF do trabalhador (apenas números, sem formatação)
-  
-  **Exemplo:** `"12345678900"`
+  CPF do trabalhador (apenas números, sem formatação) **Exemplo:**
+  `"12345678900"`
 </ParamField>
 
 <ParamField path="dataNascimento" type="string" required>
-  Data de nascimento no formato ISO 8601 (YYYY-MM-DD)
-  
-  **Exemplo:** `"1980-01-01"`
+  Data de nascimento no formato ISO 8601 (YYYY-MM-DD) **Exemplo:**
+  `"1980-01-01"`
 </ParamField>
 
 <ParamField path="telefone" type="string" required>
-  Telefone do trabalhador com DDD (apenas números)
-  
-  **Exemplo:** `"11987654321"`
+  Telefone do trabalhador com DDD (apenas números) **Exemplo:** `"11987654321"`
 </ParamField>
 
 <ParamField path="assinaturaTermo" type="object" required>
@@ -121,33 +124,34 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos
 
     <ParamField path="dataHora" type="string" required>
       Data e hora da assinatura no formato ISO 8601
-      
+
       **Exemplo:** `"2024-01-01T10:00:00Z"`
     </ParamField>
 
     <ParamField path="sessionId" type="string" required>
       Identificador único da sessão de assinatura
-      
+
       **Exemplo:** `"sessao-abc-123"`
     </ParamField>
 
     <ParamField path="localizacao" type="object" required>
       Coordenadas geográficas da assinatura
-      
+
       <Expandable title="Propriedades">
         <ParamField path="latitude" type="string" required>
           Latitude em formato decimal
-          
+
           **Exemplo:** `"-23.55052"`
         </ParamField>
-        
+
         <ParamField path="longitude" type="string" required>
           Longitude em formato decimal
-          
+
           **Exemplo:** `"-46.633308"`
         </ParamField>
       </Expandable>
     </ParamField>
+
   </Expandable>
 </ParamField>
 
@@ -158,22 +162,19 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/consultar-vinculos
 ### Resposta de Sucesso (200 Accepted)
 
 A requisição foi aceita e está sendo processada de forma assíncrona.
+
 ```json
 {
-  "success": true,
-  "message": "Consulta de vínculos iniciada com sucesso",
-  "data": {
-    "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
-    "status": "PROCESSANDO",
-    "dataConsulta": "2024-01-01T10:00:00Z"
-  }
+  "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "PROCESSANDO",
+  "dataConsulta": "2024-01-01T10:00:00Z"
 }
 ```
 
 ### Resposta de Erro (422 Bad Request)
+
 ```json
 {
-  "success": false,
   "message": "Dados inválidos",
   "errors": [
     {
@@ -185,21 +186,21 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 ```
 
 ### Resposta de Erro (401 Unauthorized)
+
 ```json
 {
-  "success": false,
   "message": "Token de acesso inválido ou expirado"
 }
 ```
 
 ### Códigos de Status
 
-| Código | Descrição |
-|--------|-----------|
-| `200` | Requisição aceita e em processamento |
-| `401` | Não autorizado - token inválido |
-| `422` | Erro de validação dos dados |
-| `500` | Erro interno do servidor |
+| Código | Descrição                            |
+| ------ | ------------------------------------ |
+| `200`  | Requisição aceita e em processamento |
+| `401`  | Não autorizado - token inválido      |
+| `422`  | Erro de validação dos dados          |
+| `500`  | Erro interno do servidor             |
 
 ---
 
@@ -207,19 +208,26 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 
 <Steps>
   <Step title="Aguardar processamento">
-    A consulta é processada de forma assíncrona. Aguarde alguns segundos antes de consultar o resultado.
+    A consulta é processada de forma assíncrona. Aguarde alguns segundos antes
+    de consultar o resultado.
   </Step>
-  
+
   <Step title="Consultar resultado">
-    Utilize o endpoint de consulta de status ou webhook para obter o resultado da consulta de vínculos.
+    Utilize o endpoint de consulta de status ou webhook para obter o resultado
+    da consulta de vínculos.
   </Step>
-  
+
   <Step title="Analisar vínculos">
-    Com os vínculos retornados, você pode prosseguir para a próxima etapa do processo de consignado.
+    Com os vínculos retornados, você pode prosseguir para a próxima etapa do
+    processo de consignado.
   </Step>
 </Steps>
 
-<Card title="Próximo: Consultar Status" icon="arrow-right" href="/02-consultar-status">
+<Card
+  title="Próximo: Consultar Status"
+  icon="arrow-right"
+  href="/02-consultar-status"
+>
   Aprenda como consultar o status e resultado da consulta de vínculos
 </Card>
 
@@ -232,13 +240,17 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
     O processamento geralmente leva entre 5 a 30 segundos. Recomendamos aguardar pelo menos 10 segundos antes de consultar o status.
   </Accordion>
 
-  <Accordion title="O que fazer se o CPF não for encontrado?">
-    Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando que não há vínculos ativos para aquele trabalhador.
-  </Accordion>
+{" "}
+<Accordion title="O que fazer se o CPF não for encontrado?">
+  Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando
+  que não há vínculos ativos para aquele trabalhador.
+</Accordion>
 
-  <Accordion title="Posso fazer múltiplas consultas simultâneas?">
-    Sim, você pode fazer múltiplas consultas simultâneas. Use a `chaveIdentificadora` única para rastrear cada requisição.
-  </Accordion>
+{" "}
+<Accordion title="Posso fazer múltiplas consultas simultâneas?">
+  Sim, você pode fazer múltiplas consultas simultâneas. Use a
+  `chaveIdentificadora` única para rastrear cada requisição.
+</Accordion>
 
   <Accordion title="O termo de aceite é obrigatório?">
     Sim, conforme a LGPD, é obrigatório obter o consentimento explícito do trabalhador antes de consultar seus dados.
