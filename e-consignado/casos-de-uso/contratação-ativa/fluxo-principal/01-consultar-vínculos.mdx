@@ -89,8 +89,9 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
 
 ### Parâmetros da Requisição
 
-<ParamField path="chaveIdentificadora" type="string (UUID)" required>
+<ParamField path="chaveIdentificadora" type="number" required>
   Identificador único da requisição para rastreabilidade e idempotência
+  Esperamos que este valor seja um número inteiro gerado pelo sistema do originador.
 </ParamField>
 
 <ParamField path="cpf" type="string" required>
@@ -162,11 +163,13 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
 A requisição foi aceita e está sendo processada de forma assíncrona.
 ```json
 {
-  "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
+  "chaveIdentificadora": 2345678901,
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
   "status": "PROCESSANDO",
   "dataSolicitacao": "2024-01-01T10:00:00Z"
 }
 ```
+
 
 ### Resposta de Erro (422 Unprocessable Entity)
 ```json
