@@ -89,8 +89,8 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
 
 ### Parâmetros da Requisição
 
-<ParamField path="chaveIdentificadora" type="number" required>
-  Identificador único da requisição para rastreabilidade e idempotência
+<ParamField path="chaveIdentificadora" type="int" required>
+  Identificador único da requisição para rastreabilidade e idempotência.
   Esperamos que este valor seja um número inteiro gerado pelo sistema do originador.
 </ParamField>
 
