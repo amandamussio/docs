@@ -75,7 +75,16 @@
       }
     ],
     "global": {
-      "anchors": []
+      "anchors": [
+        {
+          "anchor": "Autenticação",
+          "href": "https://wincred.digital/comece-por-aqui/autenticação"
+        },
+        {
+          "anchor": "Configuração de Webhooks",
+          "href": "https://wincred.digital/comece-por-aqui/configurando-webhooks"
+        }
+      ]
     }
   },
   "logo": {
