@@ -21,10 +21,10 @@ x-event-type: e-consignado.contratacao-ativa.vinculos
 
 A Wincred disponibiliza 3 status possíveis para o evento de listagem de vínculos:
 
-| Status                      | Descrição                                                             |
-| --------------------------- | --------------------------------------------------------------------- |
-| `CONCLUIDO`                 | A listagem foi concluída com sucesso e os vínculos estão disponíveis. |
-| `FALHA`                     | Ocorreu um erro durante a listagem dos vínculos.                      |
+| Status      | Descrição                                                             |
+| ----------- | --------------------------------------------------------------------- |
+| `CONCLUIDO` | A listagem foi concluída com sucesso e os vínculos estão disponíveis. |
+| `FALHA`     | Ocorreu um erro durante a listagem dos vínculos.                      |
 
 ---
 
@@ -75,10 +75,7 @@ A Wincred disponibiliza 3 status possíveis para o evento de listagem de víncul
 | `idCotacao`       | UUID     | Identificador único da cotação                                         |
 | `status`          | string   | Status da listagem (`CONCLUIDO`, `FALHA`, `NENHUM_VINCULO_ENCONTRADO`) |
 | `vinculos`        | array    | Lista de vínculos encontrados                                          |
-| `idVinculo`      | UUID     | Identificador único do vínculo                                         |
-| `nomeTrabalhador` | string   | Nome do trabalhador                                                    |
-| `cpfTrabalhador`  | string   | CPF do trabalhador                                                     |
-| `dataDeAdmissao`  | date     | Data de admissão do trabalhador                                        |
-| `cargo`           | string   | Cargo do trabalhador                                                   |
-| `salario`         | float    | Salário do trabalhador                                                 |
+| `tipoInscricao`   | int      | Tipo de inscrição do trabalhador (0 - CPF, 1 - CNPJ)                   |
+| `numeroInscricao` | string   | Número do CNPJ do vínculo                                    |
+| `matricula`       | string   | Matrícula do trabalhador na empresa                                    |                                               |
 | `dataCriacao`     | datetime | Data e hora de criação do evento                                       |
