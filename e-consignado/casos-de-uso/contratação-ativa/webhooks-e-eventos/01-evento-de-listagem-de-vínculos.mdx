@@ -1,0 +1,84 @@
+---
+title: "01 - Evento de Listagem de Vínculos"
+description: "Gerencie eventos de listagem de vínculos para a contratação ativa"
+---
+
+Quando a listagem de vínculos do trabalhador é concluída, a Wincred envia um evento para o webhook configurado, informando o status e os detalhes da listagem.
+
+## Você pode usar este evento para:
+
+- Notificar o seu sistema sobre a conclusão da listagem de vínculos.
+- Mostrar uma lista de vínculos ao trabalhador para escolher o vínculo desejado.
+- Prosseguir para a próxima etapa de simulação de propostas de crédito consignado.
+
+A Wincred disponibiliza o tipo do evento via HEADER do webhook:
+
+```
+x-event-type: e-consignado.contratacao-ativa.vinculos
+```
+
+## Casos de Uso
+
+A Wincred disponibiliza 3 status possíveis para o evento de listagem de vínculos:
+
+| Status                      | Descrição                                                             |
+| --------------------------- | --------------------------------------------------------------------- |
+| `CONCLUIDO`                 | A listagem foi concluída com sucesso e os vínculos estão disponíveis. |
+| `FALHA`                     | Ocorreu um erro durante a listagem dos vínculos.                      |
+
+---
+
+## Payload do Evento
+
+### Exemplo de Payload - status `CONCLUIDO`
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "CONCLUIDO",
+  "vinculos": [
+    {
+      "tipoInscricao": 0,
+      "numeroInscricao": "231312",
+      "matricula": "123321"
+    }
+  ],
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
+### Exemplo de Payload - status `CONCLUIDO` com nenhum vínculo encontrado
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "CONCLUIDO",
+  "vinculos": [],
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
+### Exemplo de Payload - status `FALHA`
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "FALHA",
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
+### Campos do Payload
+
+| Campo             | Tipo     | Descrição                                                              |
+| ----------------- | -------- | ---------------------------------------------------------------------- |
+| `idCotacao`       | UUID     | Identificador único da cotação                                         |
+| `status`          | string   | Status da listagem (`CONCLUIDO`, `FALHA`, `NENHUM_VINCULO_ENCONTRADO`) |
+| `vinculos`        | array    | Lista de vínculos encontrados                                          |
+| `idVinculo`      | UUID     | Identificador único do vínculo                                         |
+| `nomeTrabalhador` | string   | Nome do trabalhador                                                    |
+| `cpfTrabalhador`  | string   | CPF do trabalhador                                                     |
+| `dataDeAdmissao`  | date     | Data de admissão do trabalhador                                        |
+| `cargo`           | string   | Cargo do trabalhador                                                   |
+| `salario`         | float    | Salário do trabalhador                                                 |
+| `dataCriacao`     | datetime | Data e hora de criação do evento                                       |
