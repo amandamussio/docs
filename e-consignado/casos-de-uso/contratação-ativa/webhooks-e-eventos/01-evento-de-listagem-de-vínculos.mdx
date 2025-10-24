@@ -11,11 +11,7 @@ Quando a listagem de vínculos do trabalhador é concluída, a Wincred envia um 
 - Mostrar uma lista de vínculos ao trabalhador para escolher o vínculo desejado.
 - Prosseguir para a próxima etapa de simulação de propostas de crédito consignado.
 
-A Wincred disponibiliza o tipo do evento via HEADER do webhook:
 
-```
-x-event-type: e-consignado.contratacao-ativa.vinculos
-```
 
 ## Casos de Uso
 
@@ -27,6 +23,12 @@ A Wincred disponibiliza 3 status possíveis para o evento de listagem de víncul
 | `FALHA`     | Ocorreu um erro durante a listagem dos vínculos.                      |
 
 ---
+
+## Header do tipo do evento no Webhook:
+
+```http
+x-event-type: e-consignado.contratacao-ativa.vinculos
+```
 
 ## Payload do Evento
 
