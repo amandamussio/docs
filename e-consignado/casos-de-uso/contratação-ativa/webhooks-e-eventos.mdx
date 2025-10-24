@@ -7,7 +7,25 @@ description: "Gerencie eventos e webhooks para a contratação ativa"
 
 Quando a simulação de propostas de crédito consignado é concluída, a Wincred envia um evento para o webhook configurado, informando o status e os detalhes da simulação.
 
+## Casos de Uso
+
+- Notificar o sistema do cliente sobre a conclusão da simulação de propostas.
+- Atualizar o status da cotação no sistema do cliente.
+- Processar as propostas simuladas para análise ou apresentação ao trabalhador.
+
+A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas:
+
+| Status                       | Descrição                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------- |
+| `CONCLUIDO`                  | A simulação foi concluída com sucesso e as propostas estão disponíveis.               |
+| `FALHA`                      | Ocorreu um erro durante a simulação das propostas.                                    |
+| `NENHUMA_SIMULACAO_APROVADA` | Nenhuma proposta foi aprovada para o trabalhador pela política de crédito da Wincred. |
+
+---
+
 ## Payload do Evento
+
+### Exemplo de Payload - status `CONCLUIDO`
 
 ```json
 {
@@ -31,23 +49,41 @@ Quando a simulação de propostas de crédito consignado é concluída, a Wincre
 }
 ```
 
+### Exemplo de Payload - status `FALHA`
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "FALHA",
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
+### Exemplo de Payload - status `NENHUMA_SIMULACAO_APROVADA`
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "NENHUMA_SIMULACAO_APROVADA",
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
 ### Campos do Payload
 
-| Campo                  | Tipo     | Descrição                                         |
-| ---------------------- | -------- | ------------------------------------------------- |
-| `idCotacao`           | UUID     | Identificador único da cotação                     |
-| `status`              | string   | Status da simulação (`CONCLUIDO`, `FALHA`)          |
-| `propostas`           | array    | Lista de propostas simuladas                        |
-| `idProposta`          | UUID     | Identificador único da proposta                        |
-| `dataDeVencimento`    | datetime | Data de vencimento da primeira parcela                 |
-| `dataDaLiberacao`     | datetime | Data prevista para liberação do crédito                    |
-| `valorDesembolsoTotal`| float    | Valor total a ser desembolsado                           |
-| `valorSeguro`         | float    | Valor do seguro incluído na proposta                      |
-| `valorDesembolsoTrabalhador` | float | Valor líquido a ser recebido pelo trabalhador          |
-| `valorParcela`        | float    | Valor de cada parcela                                 |
-| `numeroParcelas`     | int      | Número total de parcelas                              |
-| `taxaJuros`          | float    | Taxa de juros aplicada na simulação                       |
-| `comSeguro`          | boolean  | Indica se a proposta inclui seguro                          |
-| `dataCriacao`        | datetime | Data e hora de criação do evento                          |
-
-
+| Campo                        | Tipo     | Descrição                                                                |
+| ---------------------------- | -------- | ------------------------------------------------------------------------ |
+| `idCotacao`                  | UUID     | Identificador único da cotação                                           |
+| `status`                     | string   | Status da simulação (`CONCLUIDO`, `FALHA`, `NENHUMA_SIMULACAO_APROVADA`) |
+| `propostas`                  | array    | Lista de propostas simuladas                                             |
+| `idProposta`                 | UUID     | Identificador único da proposta                                          |
+| `dataDeVencimento`           | datetime | Data de vencimento da primeira parcela                                   |
+| `dataDaLiberacao`            | datetime | Data prevista para liberação do crédito                                  |
+| `valorDesembolsoTotal`       | float    | Valor total a ser desembolsado                                           |
+| `valorSeguro`                | float    | Valor do seguro incluído na proposta                                     |
+| `valorDesembolsoTrabalhador` | float    | Valor líquido a ser recebido pelo trabalhador                            |
+| `valorParcela`               | float    | Valor de cada parcela                                                    |
+| `numeroParcelas`             | int      | Número total de parcelas                                                 |
+| `taxaJuros`                  | float    | Taxa de juros aplicada na simulação                                      |
+| `comSeguro`                  | boolean  | Indica se a proposta inclui seguro                                       |
+| `dataCriacao`                | datetime | Data e hora de criação do evento                                         |
