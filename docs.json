@@ -34,7 +34,11 @@
             "pages": ["e-consignado/introducao"]
           },
           {
-            "group": "Referências de API"
+            "group": "Comece por Aqui",
+            "pages": [
+              "comece-por-aqui/autenticação",
+              "comece-por-aqui/configurando-webhooks"
+            ]
           },
           {
             "group": "Casos de Uso",
@@ -51,16 +55,16 @@
                     ]
                   },
                   {
+                    "group": "Webhooks e Eventos",
+                    "pages": [
+                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos"
+                    ]
+                  },
+                  {
                     "group": "GETs - Disponíveis",
                     "pages": [
                       "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-status-da-proposta",
                       "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-cotações-disponíveis"
-                    ]
-                  },
-                  {
-                    "group": "Webhooks e Eventos",
-                    "pages": [
-                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos"
                     ]
                   }
                 ]
@@ -71,9 +75,7 @@
       }
     ],
     "global": {
-      "anchors": [
-       
-      ]
+      "anchors": []
     }
   },
   "logo": {
