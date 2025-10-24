@@ -3,4 +3,51 @@ title: "Eventos e Webhooks"
 description: "Gerencie eventos e webhooks para a contratação ativa"
 ---
 
-Em breve.
+# Evento de Propostas Simuladas
+
+Quando a simulação de propostas de crédito consignado é concluída, a Wincred envia um evento para o webhook configurado, informando o status e os detalhes da simulação.
+
+## Payload do Evento
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "CONCLUIDO",
+  "propostas": [
+    {
+      "idProposta": "987e6543-e21b-12d3-a456-426614174999",
+      "dataDeVencimento": "2000-01-01T00:00:00.000",
+      "dataDaLiberacao": "2024-01-05T10:00:00Z",
+      "valorDesembolsoTotal": 1380.0,
+      "valorSeguro": 30.0,
+      "valorDesembolsoTrabalhador": 1350.0,
+      "valorParcela": 138,
+      "numeroParcelas": 10,
+      "taxaJuros": 1.5,
+      "propostaComSeguro": true
+    }
+  ],
+  "dataCriacao": "2024-01-01T10:05:00Z"
+}
+```
+
+### Campos do Payload
+
+| Campo                  | Tipo     | Descrição                                         |
+| ---------------------- | -------- | ------------------------------------------------- |
+| `idCotacao`           | UUID     | Identificador único da cotação                     |
+| `status`              | string   | Status da simulação (`CONCLUIDO`, `FALHA`)          |
+| `propostas`           | array    | Lista de propostas simuladas                        |
+| `idProposta`          | UUID     | Identificador único da proposta                        |
+| `dataDeVencimento`    | datetime | Data de vencimento da primeira parcela                 |
+| `dataDaLiberacao`     | datetime | Data prevista para liberação do crédito                    |
+| `valorDesembolsoTotal`| float    | Valor total a ser desembolsado                           |
+| `valorSeguro`         | float    | Valor do seguro incluído na proposta                      |
+| `valorDesembolsoTrabalhador` | float | Valor líquido a ser recebido pelo trabalhador          |
+| `valorParcela`        | float    | Valor de cada parcela                                 |
+| `numeroParcelas`     | int      | Número total de parcelas                              |
+| `taxaJuros`          | float    | Taxa de juros aplicada na simulação                       |
+| `propostaComSeguro`  | boolean  | Indica se a proposta inclui seguro                          |
+| `dataCriacao`        | datetime | Data e hora de criação do evento                          | 
+
+
