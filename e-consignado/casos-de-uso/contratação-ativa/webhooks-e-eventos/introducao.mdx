@@ -1,0 +1,31 @@
+---
+title: "Introdução aos Webhooks e Eventos"
+description: "Entenda como funcionam os webhooks e eventos na contratação ativa"
+---
+
+## Configuração de Webhooks
+
+Para utilizar webhooks e eventos na contratação ativa, é necessário configurar um endpoint em seu sistema que possa receber notificações da Wincred sobre o status de processos assíncronos, como:
+
+- Listagem de vínculos
+- Simulação de propostas
+
+<Info>
+Consulte o guia [Configuração de Webhooks](/comece-por-aqui/configurando-webhooks) para mais detalhes.
+</Info>
+
+## Identificação de Eventos
+
+A Wincred disponibiliza o tipo do evento via **header HTTP** do webhook:
+```http
+x-event-type: e-consignado.contratacao-ativa.[tipo-do-evento]
+```
+
+## Tipos de Eventos
+
+Os eventos seguem o padrão de nomenclatura:
+```
+e-consignado.contratacao-ativa.[tipo-do-evento]
+```
+
+Onde `[tipo-do-evento]` indica a ação específica que foi concluída no sistema.
