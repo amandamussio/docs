@@ -10,8 +10,7 @@ O primeiro passo para oferecer crédito na modalidade de consignado privado é c
 A Wincred disponibiliza um endpoint assíncrono que abstrai toda a complexidade do processo de consulta, realizando automaticamente:
 
 - Envio dos dados da autorização de consulta para a DATAPREV
-- Consulta dos dados do trabalhador na DATAPREV
-- Validação e recuperação dos vínculos empregatícios ativos
+- Validação e recuperação dos vínculos empregatícios ativos.
 
 <Info>
 Este é um endpoint **assíncrono**. A resposta retorna imediatamente com um identificador, e você deve consultar o status posteriormente para obter o resultado.
@@ -71,7 +70,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
-    "chaveIdentificadora": "123e4567-e89b-12d3-a456-426614174000",
+    "chaveIdentificadora": 2345678901,
     "cpf": "12345678900",
     "dataNascimento": "1980-01-01",
     "telefone": "11987654321",
@@ -207,37 +206,15 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
     Utilize o endpoint de consulta de status ou webhook para obter o resultado da consulta de vínculos.
   </Step>
   
-  <Step title="Analisar vínculos">
-    Com os vínculos retornados, você pode prosseguir para a próxima etapa do processo de consignado.
+  <Step title="Escolher vínculo">
+    Com os vínculos retornados, você pode prosseguir para a próxima etapa de simular propostas de crédito consignado.
   </Step>
 </Steps>
 
-<Card
+{/* <Card
   title="Próximo: Consultar Status"
   icon="arrow-right"
   href="/02-consultar-status"
 >
   Aprenda como consultar o status e resultado da consulta de vínculos
-</Card>
-
----
-
-## Perguntas Frequentes
-
-<AccordionGroup>
-  <Accordion title="Quanto tempo demora o processamento?">
-    O processamento geralmente leva entre 5 a 30 segundos. Recomendamos aguardar pelo menos 10 segundos antes de consultar o status.
-  </Accordion>
-
-  <Accordion title="O que fazer se o CPF não for encontrado?">
-    Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando que não há vínculos ativos para aquele trabalhador.
-  </Accordion>
-
-  <Accordion title="Posso fazer múltiplas consultas simultâneas?">
-    Sim, você pode fazer múltiplas consultas simultâneas. Use a `chaveIdentificadora` única para rastrear cada requisição.
-  </Accordion>
-
-  <Accordion title="O termo de aceite é obrigatório?">
-    Sim, conforme a LGPD, é obrigatório obter o consentimento explícito do trabalhador antes de consultar seus dados.
-  </Accordion>
-</AccordionGroup>
+</Card> */}

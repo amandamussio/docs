@@ -4,12 +4,167 @@ title: "02 - Simular Propostas"
 
 O segundo passo na contratação ativa é simular propostas de crédito consignado com base nos vínculo empregatício escolhido pelo trabalhador.
 
-A Wincred disponibiliza um endpoint **síncrono** que recebe os dados do vínculo selecionado e retorna uma lista de propostas simuladas.
+A Wincred disponibiliza um endpoint **assíncrono** que recebe os dados do vínculo selecionado e que abstrai a complexidade, realizando:
+
+- Consulta de dados do trabalhador.
+- Simula propostas de crédito consignado conforme os parâmetros informados.
 
 ---
 
 ## Endpoint
 
-Para executar os passos iniciais da contratação ativa, lembre-se de ter seguido o processo de [autenticação](/comece-por-aqui/autenticação).
+<ParamField path="POST" type="endpoint">
+  `/api/v1/e-consignado/simular`
+</ParamField>
 
-Em breve.
+### Headers
+
+| Header          | Tipo   | Obrigatório | Descrição                      |
+| --------------- | ------ | ----------- | ------------------------------ |
+| `Content-Type`  | string | Sim         | `application/json`             |
+| `Authorization` | string | Sim         | `Bearer {seu_token_de_acesso}` |
+
+---
+
+## Requisição
+
+### Exemplo de Requisição
+
+```bash
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/simular" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {seu_token_de_acesso}" \
+  -d '{
+    "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+    "numeroParcelas": 24,
+    "amount": 1500.00
+    "empresa": { // Dados que retornam da dataprev
+        "tipoInscricao": 0,
+        "numeroInscricao": "",
+        "matricula": "", // matricula do funcionário na empresa
+    },
+  }'
+```
+
+### Parâmetros da Requisição
+
+<ParamField path="idCotacao" type="UUID" required>
+  Identificador único da cotação retornado na etapa de consulta de vínculos.
+  **Exemplo:** `"123e4567-e89b-12d3-a456-426614174000"`
+</ParamField>
+
+<ParamField path="numeroParcelas" type="int" required>
+  Número de parcelas desejadas para a simulação de crédito consignado.
+  
+  **Exemplo:** `24`
+</ParamField>
+
+<ParamField path="amount" type="float" required>
+  Valor total do empréstimo para o qual se deseja simular a proposta de crédito consignado.
+  
+  **Exemplo:** `1500.00`
+</ParamField>
+
+<ParamField path="empresa" type="object" required>
+  Objeto contendo os dados da empresa e matrícula do trabalhador, conforme retornado pela DATAPREV na etapa de consulta de vínculos.
+  <Expandable title="Propriedades">
+    <ParamField path="tipoInscricao" type="int" required>
+      Tipo de inscrição da empresa (0 - CPF, 1 - CNPJ)
+    </ParamField>
+
+    <ParamField path="numeroInscricao" type="string" required>
+      Número da inscrição da empresa (apenas números)
+    </ParamField>
+
+    <ParamField path="matricula" type="string" required>
+      Matrícula do trabalhador na empresa
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+---
+
+## Resposta
+
+### Resposta de Sucesso (202 Accepted)
+
+A requisição foi aceita e está sendo processada de forma assíncrona.
+
+```json
+{
+  "idCotacao": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+
+
+### Resposta de Erro (422 Unprocessable Entity)
+```json
+{
+  "erro": "Dados inválidos"
+}
+```
+
+### Resposta de Erro (401 Unauthorized)
+```json
+{
+  "erro": "Token de acesso inválido ou expirado"
+}
+```
+
+### Códigos de Status
+
+| Código | Descrição                            |
+| ------ | ------------------------------------ |
+| `202`  | Requisição aceita e em processamento |
+| `401`  | Não autorizado - token inválido      |
+| `422`  | Erro de validação dos dados          |
+| `500`  | Erro interno do servidor             |
+---
+
+# Próximos Passos
+
+<Steps>
+  <Step title="Aguardar processamento">
+    A consulta é processada de forma assíncrona. Aguarde alguns segundos antes de consultar o resultado.
+  </Step>
+  
+  <Step title="Consultar resultado">
+    Utilize o endpoint de consulta de status ou webhook para obter o resultado da consulta de vínculos.
+  </Step>
+  
+  <Step title="Analisar vínculos">
+    Com os vínculos retornados, você pode prosseguir para a próxima etapa do processo de consignado.
+  </Step>
+</Steps>
+
+<Card
+  title="Próximo: Consultar Status"
+  icon="arrow-right"
+  href="/02-consultar-status"
+>
+  Aprenda como consultar o status e resultado da consulta de vínculos
+</Card>
+
+---
+
+## Perguntas Frequentes
+
+<AccordionGroup>
+  <Accordion title="Quanto tempo demora o processamento?">
+    O processamento geralmente leva entre 5 a 30 segundos. Recomendamos aguardar pelo menos 10 segundos antes de consultar o status.
+  </Accordion>
+
+  <Accordion title="O que fazer se o CPF não for encontrado?">
+    Se o CPF não for encontrado na DATAPREV, você receberá um retorno indicando que não há vínculos ativos para aquele trabalhador.
+  </Accordion>
+
+  <Accordion title="Posso fazer múltiplas consultas simultâneas?">
+    Sim, você pode fazer múltiplas consultas simultâneas. Use a `chaveIdentificadora` única para rastrear cada requisição.
+  </Accordion>
+
+  <Accordion title="O termo de aceite é obrigatório?">
+    Sim, conforme a LGPD, é obrigatório obter o consentimento explícito do trabalhador antes de consultar seus dados.
+  </Accordion>
+</AccordionGroup>
