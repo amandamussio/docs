@@ -37,7 +37,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/simular" \
   -d '{
     "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
     "numeroParcelas": 24,
-    "amount": 1500.00
+    "valor": 1500.00
     "empresa": { // Dados que retornam da dataprev
         "tipoInscricao": 0,
         "numeroInscricao": "",
@@ -59,7 +59,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/simular" \
   **Exemplo:** `24`
 </ParamField>
 
-<ParamField path="amount" type="float" required>
+<ParamField path="valor" type="float" required>
   Valor total do empréstimo para o qual se deseja simular a proposta de crédito consignado.
   
   **Exemplo:** `1500.00`
