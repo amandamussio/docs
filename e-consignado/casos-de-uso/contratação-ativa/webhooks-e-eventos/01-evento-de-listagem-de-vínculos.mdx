@@ -40,9 +40,16 @@ x-event-type: e-consignado.contratacao-ativa.vinculos
   "status": "CONCLUIDO",
   "vinculos": [
     {
-      "tipoInscricao": 0,
-      "numeroInscricao": "231312",
-      "matricula": "123321"
+      "tipoInscricao": 1,
+      "numeroInscricao": "48565145000166",
+      "matricula": "123321",
+      "elegivel": true
+    },
+    {
+      "tipoInscricao": 1,
+      "numeroInscricao": "28973255000150",
+      "matricula": "456654",
+      "elegivel": false
     }
   ],
   "dataCriacao": "2024-01-01T10:05:00Z"
@@ -78,6 +85,7 @@ x-event-type: e-consignado.contratacao-ativa.vinculos
 | `status`          | string   | Status da listagem (`CONCLUIDO`, `FALHA`, `NENHUM_VINCULO_ENCONTRADO`) |
 | `vinculos`        | array    | Lista de vínculos encontrados                                          |
 | `tipoInscricao`   | int      | Tipo de inscrição do trabalhador (0 - CPF, 1 - CNPJ)                   |
-| `numeroInscricao` | string   | Número do CNPJ do vínculo                                    |
+| `numeroInscricao` | string   | Número do CNPJ do vínculo                                              |
+| `elegivel`       | boolean  | Indica se o vínculo do trabalhador é elegível para crédito consignado   |
 | `matricula`       | string   | Matrícula do trabalhador na empresa                                    |                                               |
 | `dataCriacao`     | datetime | Data e hora de criação do evento                                       |
