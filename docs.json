@@ -61,13 +61,6 @@
                       "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/01-evento-de-listagem-de-vínculos",
                       "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/02-evento-de-propostas-simuladas"
                     ]
-                  },
-                  {
-                    "group": "GETs - Disponíveis",
-                    "pages": [
-                      "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-status-da-proposta",
-                      "e-consignado/casos-de-uso/contratação-ativa/consultas/consultar-cotações-disponíveis"
-                    ]
                   }
                 ]
               }
