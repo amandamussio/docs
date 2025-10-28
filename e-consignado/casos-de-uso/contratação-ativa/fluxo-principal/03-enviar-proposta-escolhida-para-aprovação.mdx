@@ -29,44 +29,127 @@ Após o trabalhador escolher uma das propostas simuladas, envie a proposta selec
 
 ### Exemplo de Requisição
 
+### Exemplo de Requisição
 ```bash
 curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
     "idProposta": "019a25f5-7f74-783a-98e1-940fdab81a3a",
-  "pessoa": {
-    "naturalidade": "São Paulo",
-    "documento": {
-      "numero": "123456789",
-      "orgaoExpedidor": "SSP",
-      "uf": "SP",
-      "dataDeEmissao": "2020-01-01",
-      "tipoDocumento": "RG"
+    "pessoa": {
+      "naturalidade": "São Paulo",
+      "documento": {
+        "numero": "123456789",
+        "orgaoExpedidor": "SSP",
+        "uf": "SP",
+        "dataDeEmissao": "2020-01-01",
+        "tipoDocumento": "RG"
+      },
+      "endereco": {
+        "rua": "Avenida Paulista",
+        "numero": "1578",
+        "complemento": "Apto 142",
+        "bairro": "Bela Vista",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "cep": "01310200"
+      },
+      "estadoCivil": "SOLTEIRO",
+      "email": "joao.silva@example.com",
+      "telefone": "+5511987654321",
+      "patrimonio": "50000.00"
     },
-    "endereco": {
-        "rua": "",
-        "numero": "",
-        "complemento": "",
-        "bairro": "",
-        "cidade": "",
-        "uf": "",
-        "cep": ""
-    },
-    "estadoCivil": "SOLTEIRO",
-    "email": "person@example.com",
-    "telefone": "+5511999999999",
-    "patrimonio": "10000.00"
-  },
-  "contaBancaria": {
-    "compe": "123",
-    "agencia": "0001",
-    "conta": "12345-6",
-    "tipo": "CORRENTE",
-    "chavePix": "user@pix.com",
-  },
+    "contaBancaria": {
+      "compe": "341",
+      "agencia": "0001",
+      "conta": "12345-6",
+      "tipo": "CORRENTE",
+      "chavePix": "joao.silva@example.com"
+    }
   }'
 ```
+
+<Accordion title="Exemplo com CNH">
+```bash
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {seu_token_de_acesso}" \
+  -d '{
+    "idProposta": "019a25f5-7f74-783a-98e1-940fdab81a3a",
+    "pessoa": {
+      "naturalidade": "Rio de Janeiro",
+      "documento": {
+        "numero": "98765432109",
+        "orgaoExpedidor": "DETRAN",
+        "uf": "RJ",
+        "dataDeEmissao": "2021-06-15",
+        "tipoDocumento": "CNH"
+      },
+      "endereco": {
+        "rua": "Rua das Flores",
+        "numero": "456",
+        "complemento": "Casa 2",
+        "bairro": "Copacabana",
+        "cidade": "Rio de Janeiro",
+        "uf": "RJ",
+        "cep": "22070010"
+      },
+      "estadoCivil": "CASADO",
+      "email": "maria.santos@example.com",
+      "telefone": "+5521998765432",
+      "patrimonio": "75000.00"
+    },
+    "contaBancaria": {
+      "compe": "001",
+      "agencia": "1234",
+      "conta": "98765-4",
+      "tipo": "CORRENTE",
+      "chavePix": "+5521998765432"
+    }
+  }'
+```
+</Accordion>
+
+<Accordion title="Exemplo com Conta Poupança">
+```bash
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {seu_token_de_acesso}" \
+  -d '{
+    "idProposta": "019a25f5-7f74-783a-98e1-940fdab81a3a",
+    "pessoa": {
+      "naturalidade": "Belo Horizonte",
+      "documento": {
+        "numero": "MG1234567",
+        "orgaoExpedidor": "SSP",
+        "uf": "MG",
+        "dataDeEmissao": "2019-03-20",
+        "tipoDocumento": "RG"
+      },
+      "endereco": {
+        "rua": "Rua dos Caetés",
+        "numero": "789",
+        "complemento": "",
+        "bairro": "Savassi",
+        "cidade": "Belo Horizonte",
+        "uf": "MG",
+        "cep": "30140071"
+      },
+      "estadoCivil": "DIVORCIADO",
+      "email": "carlos.oliveira@example.com",
+      "telefone": "+5531912345678",
+      "patrimonio": "120000.00"
+    },
+    "contaBancaria": {
+      "compe": "237",
+      "agencia": "5678",
+      "conta": "45678-9",
+      "tipo": "POUPANCA",
+      "chavePix": "12345678909"
+    }
+  }'
+```
+</Accordion>
 
 ### Parâmetros da Requisição
 
