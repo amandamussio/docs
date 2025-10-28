@@ -14,7 +14,7 @@ A Wincred disponibiliza um endpoint **assíncrono** que recebe os dados do vínc
 ## Endpoint
 
 <ParamField path="POST" type="endpoint">
-  `/api/v1/e-consignado/simular`
+  `/api/v1/e-consignado/propostas/simulacoes`
 </ParamField>
 
 ### Headers
@@ -31,7 +31,7 @@ A Wincred disponibiliza um endpoint **assíncrono** que recebe os dados do vínc
 ### Exemplo de Requisição
 
 ```bash
-curl -X POST "https://api.wincred.digital/api/v1/e-consignado/simular" \
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/propostas/simulacoes" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
