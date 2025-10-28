@@ -59,7 +59,8 @@
                     "pages": [
                       "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/introducao",
                       "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/01-evento-de-listagem-de-vínculos",
-                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/02-evento-de-propostas-simuladas"
+                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/02-evento-de-propostas-simuladas",
+                      "e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/03-evento-de-resultado-de-proposta"
                     ]
                   }
                 ]

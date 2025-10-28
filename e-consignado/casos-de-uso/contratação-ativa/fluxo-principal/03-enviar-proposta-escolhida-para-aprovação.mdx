@@ -4,101 +4,252 @@ description: "Submeta a proposta escolhida pelo trabalhador para análise e apro
 ---
 
 <Info>
-Este é um endpoint **assíncrono**. A resposta retornará imediatamente com um identificador para acompanhamento do status.
+  Este é um endpoint **assíncrono**. A resposta retornará imediatamente com um
+  identificador para acompanhamento do status.
 </Info>
 
 Após o trabalhador escolher uma das propostas simuladas, envie a proposta selecionada para aprovação juntamente com os dados bancários para desembolso.
 
-## Fluxo de Aprovação
+## Endpoint
 
-<Steps>
-  <Step title="Validação da Proposta">
-    Verificação dos dados da proposta escolhida e conformidade com os parâmetros simulados
-  </Step>
-  
-  <Step title="Validação Bancária">
-    Confirmação da titularidade e validade da conta bancária informada
-    Obs: Nessa etapa será feita um pix de R$0,01 para validação da conta.
-  </Step>
-  
-  <Step title="KYC (Know Your Customer)">
-    Análise de conformidade regulatória e prevenção à lavagem de dinheiro
-  </Step>
-  
-  <Step title="Geração da CCB">
-    Criação automática da Cédula de Crédito Bancário com validade jurídica
-  </Step>
-</Steps>
+<ParamField path="POST" type="endpoint">
+  `/api/v1/e-consignado/contratos`
+</ParamField>
 
-## Guia de Integração
+### Headers
 
-### Estrutura de Dados
-```json
-{
-  "traceId": "uuid",
-  "propostaId": "string",
-  "dadosBancarios": {
-    "banco": "string",
-    "agencia": "string",
-    "conta": "string",
-    "tipoConta": "string"
-  }
-}
+| Header          | Tipo   | Obrigatório | Descrição                      |
+| --------------- | ------ | ----------- | ------------------------------ |
+| `Content-Type`  | string | Sim         | `application/json`             |
+| `Authorization` | string | Sim         | `Bearer {seu_token_de_acesso}` |
+
+---
+
+## Requisição
+
+### Exemplo de Requisição
+
+```bash
+curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {seu_token_de_acesso}" \
+  -d '{
+    "idProposta": "019a25f5-7f74-783a-98e1-940fdab81a3a",
+  "pessoa": {
+    "naturalidade": "São Paulo",
+    "documento": {
+      "numero": "123456789",
+      "orgaoExpedidor": "SSP",
+      "uf": "SP",
+      "dataDeEmissao": "2020-01-01",
+      "tipoDocumento": "RG"
+    },
+    "endereco": {
+        "rua": "",
+        "numero": "",
+        "complemento": "",
+        "bairro": "",
+        "cidade": "",
+        "uf": "",
+        "cep": ""
+    },
+    "estadoCivil": "SOLTEIRO",
+    "email": "person@example.com",
+    "telefone": "+5511999999999",
+    "patrimonio": "10000.00"
+  },
+  "contaBancaria": {
+    "compe": "123",
+    "agencia": "0001",
+    "conta": "12345-6",
+    "tipo": "CORRENTE",
+    "chavePix": "user@pix.com",
+  },
+  }'
 ```
 
-### Descrição dos Campos
+### Parâmetros da Requisição
 
-<ParamField path="traceId" type="UUID" required>
-  Identificador único da requisição para rastreabilidade
+<ParamField body="idProposta" type="string" required>
+  Identificador único da proposta simulada que foi escolhida pelo trabalhador
 </ParamField>
 
-<ParamField path="propostaId" type="string" required>
-  ID da proposta escolhida, retornado na etapa de simulação
-</ParamField>
+<ParamField body="pessoa" type="object" required>
+  Dados pessoais do trabalhador
 
-<ParamField path="dadosBancarios" type="object" required>
-  Dados bancários para desembolso do crédito
-  
-  <Expandable title="properties">
-    <ParamField path="banco" type="string" required>
-      Código do banco (3 dígitos)
+  <Expandable title="Propriedades">
+    <ParamField body="naturalidade" type="string" required>
+      Cidade de nascimento do trabalhador
     </ParamField>
-    
-    <ParamField path="agencia" type="string" required>
-      Número da agência (sem dígito verificador)
+
+    <ParamField body="documento" type="object" required>
+      Informações do documento de identificação
+
+      <Expandable title="Propriedades">
+        <ParamField body="numero" type="string" required>
+          Número do documento (sem pontuação)
+        </ParamField>
+
+        <ParamField body="orgaoExpedidor" type="string" required>
+          Órgão expedidor do documento (ex: SSP, DETRAN)
+        </ParamField>
+
+        <ParamField body="uf" type="string" required>
+          UF de expedição do documento (2 caracteres)
+        </ParamField>
+
+        <ParamField body="dataDeEmissao" type="string" required>
+          Data de emissão do documento no formato `YYYY-MM-DD`
+        </ParamField>
+
+        <ParamField body="tipoDocumento" type="string" required>
+          Tipo do documento de identificação
+
+          **Valores possíveis:** `RG`, `CNH`, `RNE`
+        </ParamField>
+      </Expandable>
     </ParamField>
-    
-    <ParamField path="conta" type="string" required>
-      Número da conta com dígito verificador
+
+    <ParamField body="endereco" type="object" required>
+      Endereço residencial do trabalhador
+
+      <Expandable title="Propriedades">
+        <ParamField body="rua" type="string" required>
+          Nome da rua, avenida, etc
+        </ParamField>
+
+        <ParamField body="numero" type="string" required>
+          Número do endereço
+        </ParamField>
+
+        <ParamField body="complemento" type="string">
+          Complemento do endereço (apartamento, bloco, etc)
+        </ParamField>
+
+        <ParamField body="bairro" type="string" required>
+          Nome do bairro
+        </ParamField>
+
+        <ParamField body="cidade" type="string" required>
+          Nome da cidade
+        </ParamField>
+
+        <ParamField body="uf" type="string" required>
+          Sigla do estado (2 caracteres)
+        </ParamField>
+
+        <ParamField body="cep" type="string" required>
+          CEP do endereço (apenas números)
+        </ParamField>
+      </Expandable>
     </ParamField>
-    
-    <ParamField path="tipoConta" type="string" required>
-      Tipo de conta: `CORRENTE` ou `POUPANCA`
+
+    <ParamField body="estadoCivil" type="string" required>
+      Estado civil do trabalhador
+
+      **Valores possíveis:** `SOLTEIRO`, `CASADO`, `DIVORCIADO`, `VIUVO`, `SEPARADO`, `UNIAO_ESTAVEL`
     </ParamField>
+
+    <ParamField body="email" type="string" required>
+      Endereço de e-mail do trabalhador
+    </ParamField>
+
+    <ParamField body="telefone" type="string" required>
+      Número de telefone com código do país (formato: +5511999999999)
+    </ParamField>
+
+    <ParamField body="patrimonio" type="string" required>
+      Valor do patrimônio do trabalhador em formato decimal (ex: "10000.00")
+    </ParamField>
+
   </Expandable>
 </ParamField>
 
-## Endpoint
+<ParamField body="contaBancaria" type="object" required>
+  Dados bancários para desembolso do empréstimo
 
-<Card title="Endpoint em Desenvolvimento" icon="code">
-  Este endpoint estará disponível em breve. Entre em contato com o time de integrações para mais informações.
-</Card>
+  <Expandable title="Propriedades">
+    <ParamField body="compe" type="string" required>
+       código COMPE é um número composto por três dígitos que identifica cada banco nas transações financeiras nacionais — 
+       exemplos: Banco do Brasil (001), Caixa Econômica Federal (104), Itaú (341), Bradesco (237), Santander (033).
+    </ParamField>
 
-<Note>
-**Precisa integrar agora?**  
-Entre em contato com nosso time técnico: [integracao@wincred.digital](mailto:integracao@wincred.digital)
-</Note>
+    <ParamField body="agencia" type="string" required>
+      Número da agência bancária
+    </ParamField>
 
-## Resposta Esperada
+    <ParamField body="conta" type="string" required>
+      Número da conta bancária com dígito verificador (formato: 12345-6)
+    </ParamField>
+
+    <ParamField body="tipo" type="string" required>
+      Tipo da conta bancária
+
+      **Valores possíveis:** `CORRENTE`, `POUPANCA`, `SALARIO`
+    </ParamField>
+
+    <ParamField body="chavePix" type="string" required>
+      Chave PIX para recebimento (e-mail, telefone, CPF ou chave aleatória)
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+---
+
+## Resposta
+
+### Resposta de Sucesso (202 Accepted)
+
+A requisição foi aceita e está sendo processada de forma assíncrona.
+
 ```json
 {
-  "traceId": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "EM_ANALISE",
-  "protocolo": "PROP-2025-001234",
-  "previsaoRetorno": "2025-10-22T16:30:00-03:00"
+  "idProposta": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
-## Próximos Passos
+### Resposta de Erro (422 Unprocessable Entity)
+```json
+{
+  "erro": "Dados inválidos"
+}
+```
 
-Após o envio da proposta, utilize o endpoint de [Consultar Status da Proposta](/api-reference/consultar-status) para acompanhar o andamento da análise.
+### Resposta de Erro (401 Unauthorized)
+```json
+{
+  "erro": "Token de acesso inválido ou expirado"
+}
+```
+
+### Códigos de Status
+
+| Código | Descrição                            |
+| ------ | ------------------------------------ |
+| `202`  | Requisição aceita e em processamento |
+| `401`  | Não autorizado - token inválido      |
+| `422`  | Erro de validação dos dados          |
+| `500`  | Erro interno do servidor             |
+---
+
+# Próximos Passos
+
+<Steps>
+  <Step title="Aguardar processamento">
+    A consulta é processada de forma assíncrona. Aguarde alguns segundos antes de consultar o resultado.
+  </Step>
+  
+  <Step title="Consultar resultado">
+    Utilize o webhook para obter o resultado da aprovação da proposta.
+  </Step>
+</Steps>
+
+<Card
+  title="Próximo: Consultar Status"
+  icon="arrow-right"
+  href="e-consignado/casos-de-uso/contratação-ativa/webhooks-e-eventos/03-evento-de-resultado-de-proposta"
+>
+  Consultar o status e resultado da aprovação da proposta
+</Card>
+---
