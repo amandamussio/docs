@@ -16,6 +16,10 @@ Após o trabalhador escolher uma das propostas simuladas, envie a proposta selec
   `/api/v1/e-consignado/contratos`
 </ParamField>
 
+### URL Base
+
+HML: https://originator-integration.apidev.wincred.digital
+
 ### Headers
 
 | Header          | Tipo   | Obrigatório | Descrição                      |
@@ -29,7 +33,7 @@ Após o trabalhador escolher uma das propostas simuladas, envie a proposta selec
 
 ### Exemplo de Requisição
 ```bash
-curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+curl -X POST "https://originator-integration.apidev.wincred.digital/api/v1/e-consignado/contratos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
@@ -68,7 +72,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
 
 <Accordion title="Exemplo com CNH">
 ```bash
-curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+curl -X POST "https://originator-integration.apidev.wincred.digital/api/v1/e-consignado/contratos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
@@ -108,7 +112,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
 
 <Accordion title="Exemplo com Conta Poupança">
 ```bash
-curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
+curl -X POST "https://originator-integration.apidev.wincred.digital/api/v1/e-consignado/contratos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{

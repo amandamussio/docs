@@ -17,6 +17,10 @@ A Wincred disponibiliza um endpoint **assíncrono** que recebe os dados do vínc
   `/api/v1/e-consignado/propostas/simulacoes`
 </ParamField>
 
+### URL Base
+
+HML: https://originator-integration.apidev.wincred.digital
+
 ### Headers
 
 | Header          | Tipo   | Obrigatório | Descrição                      |
@@ -31,7 +35,7 @@ A Wincred disponibiliza um endpoint **assíncrono** que recebe os dados do vínc
 ### Exemplo de Requisição
 
 ```bash
-curl -X POST "https://api.wincred.digital/api/v1/e-consignado/propostas/simulacoes" \
+curl -X POST "https://originator-integration.apidev.wincred.digital/api/v1/e-consignado/propostas/simulacoes" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
