@@ -147,36 +147,4 @@ OBSERVAÇÕES:
 ```
 </CodeGroup>
 
-Depois de enviar o email:
-
-1. **Aguarde confirmação** - A equipe Wincred confirmará o recebimento
-2. **Validação técnica** - Será feita uma validação das URLs e credenciais
-3. **Testes iniciais** - A equipe enviará webhooks de teste para homologação
-4. **Ativação** - Após validação bem-sucedida, o ambiente será ativado
-
-<Warning>
-  Tempo de processamento: A configuração geralmente leva de 1 a 2 dias úteis.
-  Para integrações urgentes, mencione no email.
-</Warning>
-
 ---
-
-## Eventos de Webhook
-
-Ao interagir com as APIs do E-Consignado Trabalhador, a Wincred enviará automaticamente eventos para sua URL de webhook configurada. Cada evento notifica sobre uma ação específica ou mudança de status.
-
-### Estrutura Padrão dos Eventos
-
-Todos os eventos de webhook possuem a seguinte estrutura básica:
-
-```json
-{
-  "codigoRequisicao": "string",
-  "payload": {}
-}
-```
-
-**Campos:**
-
-- `codigoRequisicao`: Identificador único da requisição que gerou este webhook. Este mesmo código é retornado na resposta síncrona da API
-- `payload`: Conteúdo da resposta, idêntico ao retorno das APIs da DATAPREV
