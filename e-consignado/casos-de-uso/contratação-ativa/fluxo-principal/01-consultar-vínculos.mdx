@@ -70,7 +70,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {seu_token_de_acesso}" \
   -d '{
-    "chaveIdentificadora": 2345678901,
+    "chaveIdentificadora": "2345678901",
     "cpf": "12345678900",
     "dataNascimento": "1980-01-01",
     "telefone": "11987654321",
@@ -88,9 +88,9 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
 
 ### Parâmetros da Requisição
 
-<ParamField path="chaveIdentificadora" type="int" required>
+<ParamField path="chaveIdentificadora" type="string" required>
   Identificador único da requisição para rastreabilidade e idempotência.
-  Esperamos que este valor seja um número inteiro gerado pelo sistema do originador.
+  Esperamos que este valor seja uma string gerada pelo sistema do originador.
 </ParamField>
 
 <ParamField path="cpf" type="string" required>
@@ -162,9 +162,10 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/vinculos" \
 A requisição foi aceita e está sendo processada de forma assíncrona.
 ```json
 {
-  "chaveIdentificadora": 2345678901,
+  "idRequisicao": "09874f03-55f4-404c-be58-951326d28336",
+  "chaveIdentificadora": "2345678901",
   "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
-  "status": "PROCESSANDO",
+  "status": "PROCESSANDO_VINCULOS",
   "dataSolicitacao": "2024-01-01T10:00:00Z"
 }
 ```
