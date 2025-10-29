@@ -9,8 +9,7 @@ Quando a listagem de vínculos do trabalhador é concluída, a Wincred envia um 
 
 - Notificar o seu sistema sobre a conclusão da listagem de vínculos.
 - Mostrar uma lista de vínculos ao trabalhador para escolher o vínculo desejado.
-- Prosseguir para a próxima etapa de simulação de propostas de crédito consignado.
-
+- Prosseguir para a próxima etapa de simulação de propostas de crédito consignado, selecionando um dos vínculos listados e elegíveis.
 
 
 ## Casos de Uso
@@ -27,7 +26,7 @@ A Wincred disponibiliza 3 status possíveis para o evento de listagem de víncul
 ## Header do tipo do evento no Webhook:
 
 ```http
-x-event-type: e-consignado.contratacao-ativa.vinculos
+x-event-type: v1.e-consignado.contratacao-ativa.vinculos
 ```
 
 ## Payload do Evento
@@ -40,15 +39,19 @@ x-event-type: e-consignado.contratacao-ativa.vinculos
   "status": "CONCLUIDO",
   "vinculos": [
     {
-      "tipoInscricao": 1,
-      "numeroInscricao": "48565145000166",
       "matricula": "123321",
+      "inscricaoEmpregador": {
+        "tipoInscricao": 1,
+        "numeroInscricao": "48565145000166"
+      },
       "elegivel": true
     },
     {
-      "tipoInscricao": 1,
-      "numeroInscricao": "28973255000150",
-      "matricula": "456654",
+      "matricula": "124444",
+      "inscricaoEmpregador": {
+        "tipoInscricao": 1,
+        "numeroInscricao": "48565145000199"
+      },
       "elegivel": false
     }
   ],
@@ -79,13 +82,15 @@ x-event-type: e-consignado.contratacao-ativa.vinculos
 
 ### Campos do Payload
 
-| Campo             | Tipo     | Descrição                                                              |
-| ----------------- | -------- | ---------------------------------------------------------------------- |
-| `idCotacao`       | UUID     | Identificador único da cotação                                         |
-| `status`          | string   | Status da listagem (`CONCLUIDO`, `FALHA`, `NENHUM_VINCULO_ENCONTRADO`) |
-| `vinculos`        | array    | Lista de vínculos encontrados                                          |
-| `tipoInscricao`   | int      | Tipo de inscrição do vínculo (0 - CPF, 1 - CNPJ)                   |
-| `numeroInscricao` | string   | Número do do vínculo                                              |
-| `elegivel`       | boolean  | Indica se o vínculo do trabalhador é elegível para crédito consignado   |
-| `matricula`       | string   | Matrícula do trabalhador na empresa                                    |                                               |
-| `dataCriacao`     | datetime | Data e hora de criação do evento                                       |
+### Campos do Payload
+
+| Campo                              | Tipo     | Descrição                                                            |
+| ---------------------------------- | -------- | -------------------------------------------------------------------- |
+| `idCotacao`                        | UUID     | Identificador único da cotação                                       |
+| `status`                           | string   | Status da listagem (`CONCLUIDO` ou `FALHA`)                          |
+| `vinculos`                         | array    | Lista de vínculos encontrados (vazio quando não há vínculos)         |
+| `vinculos[].matricula`             | string   | Matrícula do trabalhador na empresa                                  |
+| `vinculos[].inscricaoEmpregador`   | object   | Dados de inscrição do empregador                                     |
+| `vinculos[].inscricaoEmpregador.tipoInscricao` | int | Tipo de inscrição (0 - CPF, 1 - CNPJ)                    |
+| `vinculos[].inscricaoEmpregador.numeroInscricao` | string | Número da inscrição do empregador (CPF ou CNPJ)       |
+| `vinculos[].elegivel`              | boolean  | Indica se o vínculo é elegível para crédito consignado               |
