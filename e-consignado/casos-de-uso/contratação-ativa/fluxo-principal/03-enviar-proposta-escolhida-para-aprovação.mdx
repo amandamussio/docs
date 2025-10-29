@@ -50,12 +50,11 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
         "bairro": "Bela Vista",
         "cidade": "São Paulo",
         "uf": "SP",
-        "cep": "01310200"
+        "cep": "045204060"
       },
       "estadoCivil": "SOLTEIRO",
       "email": "joao.silva@example.com",
-      "telefone": "+5511987654321",
-      "patrimonio": "50000.00"
+      "telefone": "+5511987654321"
     },
     "contaBancaria": {
       "compe": "341",
@@ -94,8 +93,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
       },
       "estadoCivil": "CASADO",
       "email": "maria.santos@example.com",
-      "telefone": "+5521998765432",
-      "patrimonio": "75000.00"
+      "telefone": "+5521998765432"
     },
     "contaBancaria": {
       "compe": "001",
@@ -135,8 +133,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
       },
       "estadoCivil": "DIVORCIADO",
       "email": "carlos.oliveira@example.com",
-      "telefone": "+5531912345678",
-      "patrimonio": "120000.00"
+      "telefone": "+5531912345678"
     },
     "contaBancaria": {
       "compe": "237",
@@ -186,7 +183,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
         <ParamField body="tipoDocumento" type="string" required>
           Tipo do documento de identificação
 
-          **Valores possíveis:** `RG`, `CNH`, `RNE`
+          **Valores possíveis:** `RG`, `CNH`
         </ParamField>
       </Expandable>
     </ParamField>
@@ -228,7 +225,7 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
     <ParamField body="estadoCivil" type="string" required>
       Estado civil do trabalhador
 
-      **Valores possíveis:** `SOLTEIRO`, `CASADO`, `DIVORCIADO`, `VIUVO`, `SEPARADO`, `UNIAO_ESTAVEL`
+      **Valores possíveis:** `SOLTEIRO`, `CASADO`, `DIVORCIADO`, `VIUVO`, `SEPARADO`, `UNIAO_ESTAVEL`, `NAO_INFORMADO`, `SEPARADO_JUDICIALMENTE`, `UNIAO_ESTAVEL`, `OUTROS`
     </ParamField>
 
     <ParamField body="email" type="string" required>
@@ -237,10 +234,6 @@ curl -X POST "https://api.wincred.digital/api/v1/e-consignado/contratos" \
 
     <ParamField body="telefone" type="string" required>
       Número de telefone com código do país (formato: +5511999999999)
-    </ParamField>
-
-    <ParamField body="patrimonio" type="string" required>
-      Valor do patrimônio do trabalhador em formato decimal (ex: "10000.00")
     </ParamField>
 
   </Expandable>
@@ -286,7 +279,7 @@ A requisição foi aceita e está sendo processada de forma assíncrona.
 
 ```json
 {
-  "idProposta": "123e4567-e89b-12d3-a456-426614174000"
+  "idContrato": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
