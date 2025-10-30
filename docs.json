@@ -37,7 +37,8 @@
             "group": "Comece por Aqui",
             "pages": [
               "comece-por-aqui/autenticação",
-              "comece-por-aqui/configurando-webhooks"
+              "comece-por-aqui/configurando-webhooks",
+              "comece-por-aqui/dados-para-testes"
             ]
           },
           {
