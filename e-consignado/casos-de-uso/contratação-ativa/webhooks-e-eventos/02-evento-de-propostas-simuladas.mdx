@@ -23,6 +23,13 @@ A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas
 
 ---
 
+## Header do tipo do evento no Webhook:
+
+```http
+x-event-type: v1.e-consignado.contratacao-ativa.propostas.simulacoes
+```
+
+
 ## Payload do Evento
 
 ### Exemplo de Payload - status `CONCLUIDO`
@@ -31,6 +38,7 @@ A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas
 {
   "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
   "status": "CONCLUIDO",
+  "evento": "v1.e-consignado.contratacao-ativa.propostas.simulacoes",
   "propostas": [
     {
       "idProposta": "987e6543-e21b-12d3-a456-426614174999",
@@ -55,6 +63,7 @@ A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas
 ```json
 {
   "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "evento": "v1.e-consignado.contratacao-ativa.propostas.simulacoes",
   "status": "FALHA",
   "dataCriacao": "2024-01-01T10:05:00Z"
 }
@@ -65,6 +74,7 @@ A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas
 ```json
 {
   "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "evento": "v1.e-consignado.contratacao-ativa.propostas.simulacoes",
   "status": "NENHUMA_SIMULACAO_APROVADA",
   "dataCriacao": "2024-01-01T10:05:00Z"
 }
