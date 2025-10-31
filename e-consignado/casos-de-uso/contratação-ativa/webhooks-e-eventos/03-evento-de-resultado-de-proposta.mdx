@@ -39,7 +39,6 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
 
 ## Status do Contrato
 
-### Status de Processamento
 
 <AccordionGroup>
   <Accordion title="PROCESSANDO_KYC">
@@ -80,8 +79,6 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
   </Accordion>
 </AccordionGroup>
 
-### Status de Averbação
-
 <AccordionGroup>
   <Accordion title="AVERBACAO_APROVADA">
     A averbação foi aprovada pelo órgão/instituição pagadora. O contrato está pronto para desembolso.
@@ -96,8 +93,6 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
     **Status final:** Este é um status terminal. Consulte os detalhes do contrato para entender o motivo da rejeição.
   </Accordion>
 </AccordionGroup>
-
-### Status de Desembolso
 
 <AccordionGroup>
   <Accordion title="AGUARDANDO_DESEMBOLSO">
@@ -121,8 +116,6 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
     - `CONCLUIDO`
   </Accordion>
 </AccordionGroup>
-
-### Status Final
 
 <AccordionGroup>
   <Accordion title="CONCLUIDO">
@@ -154,7 +147,7 @@ graph TD
     style D fill:#ff6b6b
     style I fill:#ff6b6b
     style M fill:#ffa500
-    style O fill:#51cf66
+    style O fill:#51cf
 ```
 
 ## Exemplos de Payloads
