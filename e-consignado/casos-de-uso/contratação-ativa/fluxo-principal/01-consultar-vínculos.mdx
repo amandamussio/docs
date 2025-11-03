@@ -95,6 +95,7 @@ curl -X POST "https://integracao.apidev.wincred.digital/api/v1/e-consignado/vinc
 <ParamField path="chaveIdentificadora" type="string" required>
   Identificador único da requisição para rastreabilidade e idempotência.
   Esperamos que este valor seja uma string gerada pelo sistema do originador.
+  Tamanho máximo: 15 caracteres.
 </ParamField>
 
 <ParamField path="cpf" type="string" required>
