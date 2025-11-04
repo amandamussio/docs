@@ -30,7 +30,23 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
 </ParamField>
 
 <ParamField path="status" type="string" required>
-  Status atual do contrato. Veja a lista completa de status abaixo
+  Status atual do contrato. Os status seguem um fluxo sequencial dividido em três etapas principais:
+  
+  **Fluxo de KYC:**
+  - `PROCESSANDO_KYC`
+  - `PROCESSO_REJEITADO_PELO_KYC` ⛔ Status final
+  
+  **Fluxo de Averbação:**
+  - `AGUARDANDO_APROVACAO_AVERBACAO`
+  - `AVERBACAO_REJEITADA` ⛔ Status final
+  - `AVERBACAO_APROVADA_ANEXANDO_DADOS_TRABALHADOR` - Aprovado e anexando dados
+  
+  **Fluxo de Desembolso:**
+  - `AGUARDANDO_DESEMBOLSO`
+  - `FALHA_DESEMBOLSO_DADOS_BANCARIOS_INCORRETOS` - Requer correção de dados
+  - `DESEMBOLSO_REALIZADO` ✅ Status final de sucesso
+  
+  Consulte os acordeões abaixo para detalhes de cada status.
 </ParamField>
 
 <ParamField path="dataCriacao" type="string" required>
@@ -41,48 +57,37 @@ Este webhook notifica sobre todas as etapas do ciclo de vida do contrato, desde 
 
 Abra os acordeões abaixo para entender cada status possível do contrato:
 
+### Fluxo de KYC
+
 <AccordionGroup>
   <Accordion title="PROCESSANDO_KYC" open={true}>
     O contrato está em análise de Know Your Customer (KYC). Nesta etapa, são verificadas informações cadastrais, documentação e elegibilidade do cliente.
     
     **Próximos status possíveis:**
-    - `AGUARDANDO_AVERBACAO` (aprovado no KYC)
+    - `AGUARDANDO_APROVACAO_AVERBACAO` (aprovado no KYC)
     - `PROCESSO_REJEITADO_PELO_KYC` (reprovado no KYC)
   </Accordion>
 
   <Accordion title="PROCESSO_REJEITADO_PELO_KYC">
     A proposta foi rejeitada durante a análise de KYC. O contrato não prosseguirá.
     
-    **Status final:** Este é um status terminal. Consulte os detalhes do contrato para entender o motivo da rejeição.
-  </Accordion>
-
-  <Accordion title="AGUARDANDO_AVERBACAO">
-    O contrato foi aprovado no KYC e está aguardando o processo de averbação junto ao órgão/instituição pagadora.
-    
-    **Próximos status possíveis:**
-    - `PROCESSANDO_DOCUMENTOS`
-    - `AGUARDANDO_APROVACAO_AVERBACAO`
-  </Accordion>
-
-  <Accordion title="PROCESSANDO_DOCUMENTOS">
-    Os documentos contratuais estão sendo processados e validados.
-    
-    **Próximos status possíveis:**
-    - `AGUARDANDO_APROVACAO_AVERBACAO`
-  </Accordion>
-
-  <Accordion title="AGUARDANDO_APROVACAO_AVERBACAO">
-    A averbação foi solicitada e está aguardando aprovação do órgão/instituição pagadora.
-    
-    **Próximos status possíveis:**
-    - `AVERBACAO_APROVADA`
-    - `AVERBACAO_REJEITADA`
+    **Status final:** ⛔ Este é um status terminal. Consulte os detalhes do contrato para entender o motivo da rejeição.
   </Accordion>
 </AccordionGroup>
 
+### Fluxo de Averbação
+
 <AccordionGroup>
-  <Accordion title="AVERBACAO_APROVADA">
-    A averbação foi aprovada pelo órgão/instituição pagadora. O contrato está pronto para desembolso.
+  <Accordion title="AGUARDANDO_APROVACAO_AVERBACAO">
+    A averbação foi solicitada e está aguardando aprovação do órgão/instituição pagadora. Nesta etapa, o contrato está sendo analisado pela entidade responsável pelo pagamento da folha.
+    
+    **Próximos status possíveis:**
+    - `AVERBACAO_APROVADA_ANEXANDO_DADOS_TRABALHADOR`
+    - `AVERBACAO_REJEITADA`
+  </Accordion>
+
+  <Accordion title="AVERBACAO_APROVADA_ANEXANDO_DADOS_TRABALHADOR">
+    A averbação foi aprovada pelo órgão/instituição pagadora e os dados do trabalhador estão sendo anexados ao sistema. O contrato está pronto para prosseguir ao desembolso.
     
     **Próximos status possíveis:**
     - `AGUARDANDO_DESEMBOLSO`
@@ -91,13 +96,20 @@ Abra os acordeões abaixo para entender cada status possível do contrato:
   <Accordion title="AVERBACAO_REJEITADA">
     A averbação foi rejeitada pelo órgão/instituição pagadora. O contrato não prosseguirá.
     
-    **Status final:** Este é um status terminal. Consulte os detalhes do contrato para entender o motivo da rejeição.
+    **Motivos comuns:**
+    - Margem do cliente não está mais disponível no momento da averbação
+    - Inconsistências nos dados cadastrais
+    - Restrições do órgão pagador
+    
+    **Status final:** ⛔ Este é um status terminal. Consulte os detalhes do contrato para entender o motivo específico da rejeição.
   </Accordion>
 </AccordionGroup>
 
+### Fluxo de Desembolso
+
 <AccordionGroup>
   <Accordion title="AGUARDANDO_DESEMBOLSO">
-    O contrato está aguardando o processamento do desembolso para a conta do cliente.
+    O contrato está aguardando o processamento do desembolso para a conta do cliente. Todas as aprovações foram concluídas e o valor está pronto para ser transferido.
     
     **Próximos status possíveis:**
     - `DESEMBOLSO_REALIZADO`
@@ -107,22 +119,16 @@ Abra os acordeões abaixo para entender cada status possível do contrato:
   <Accordion title="FALHA_DESEMBOLSO_DADOS_BANCARIOS_INCORRETOS">
     Houve uma falha no desembolso devido a dados bancários incorretos ou inválidos.
     
-    **Ação necessária:** Atualize os dados bancários do cliente e o desembolso será reprocessado automaticamente.
+    **Ação necessária:** Atualize os dados bancários do cliente através da API ou entre em contato com o suporte. O desembolso será reprocessado automaticamente após a correção.
+    
+    **Próximos status possíveis:**
+    - `AGUARDANDO_DESEMBOLSO` (após correção dos dados)
   </Accordion>
 
   <Accordion title="DESEMBOLSO_REALIZADO">
-    O desembolso foi realizado com sucesso na conta do cliente.
+    O desembolso foi realizado com sucesso na conta do cliente. O valor foi transferido e o contrato está finalizado.
     
-    **Próximos status possíveis:**
-    - `CONCLUIDO`
-  </Accordion>
-</AccordionGroup>
-
-<AccordionGroup>
-  <Accordion title="CONCLUIDO">
-    O contrato foi concluído com sucesso. Todas as etapas foram finalizadas.
-    
-    **Status final:** Este é o status de sucesso da jornada completa do contrato.
+    **Status final:** ✅ Este é o status de sucesso da jornada completa do contrato. O processo foi concluído com êxito.
   </Accordion>
 </AccordionGroup>
 
@@ -130,31 +136,31 @@ Abra os acordeões abaixo para entender cada status possível do contrato:
 ```mermaid
 graph TD
     A[PROCESSANDO_KYC] --> B{KYC Aprovado?}
-    B -->|Sim| C[AGUARDANDO_AVERBACAO]
+    B -->|Sim| C[AGUARDANDO_APROVACAO_AVERBACAO]
     B -->|Não| D[PROCESSO_REJEITADO_PELO_KYC]
-    C --> E[PROCESSANDO_DOCUMENTOS]
-    E --> F[AGUARDANDO_APROVACAO_AVERBACAO]
-    F --> G{Averbação Aprovada?}
-    G -->|Sim| H[AVERBACAO_APROVADA]
-    G -->|Não| I[AVERBACAO_REJEITADA]
-    H --> J[AGUARDANDO_DESEMBOLSO]
-    J --> K{Desembolso OK?}
-    K -->|Sim| L[DESEMBOLSO_REALIZADO]
-    K -->|Não| M[FALHA_DESEMBOLSO_DADOS_BANCARIOS_INCORRETOS]
-    M --> N[Corrigir dados bancários]
-    N --> J
-    L --> O[CONCLUIDO]
     
-    style D fill:#ff6b6b,color:#000
-    style I fill:#ff6b6b,color:#000
-    style M fill:#ffa500,color:#000
-    style O fill:#51aa98,color:#000
+    C --> E{Averbação Aprovada?}
+    E -->|Sim| F[AVERBACAO_APROVADA_ANEXANDO_DADOS_TRABALHADOR]
+    E -->|Não| G[AVERBACAO_REJEITADA]
+    
+    F --> H[AGUARDANDO_DESEMBOLSO]
+    H --> I{Desembolso OK?}
+    I -->|Sim| J[DESEMBOLSO_REALIZADO]
+    I -->|Não| K[FALHA_DESEMBOLSO_DADOS_BANCARIOS_INCORRETOS]
+    
+    K --> L[Corrigir dados bancários]
+    L --> H
+    
+    style D fill:#ff6b6b,color:#fff
+    style G fill:#ff6b6b,color:#fff
+    style K fill:#ffa500,color:#000
+    style J fill:#51aa98,color:#fff
 ```
 
 ## Exemplos de Payloads
 
 <CodeGroup>
-```json Início do Processo
+```json Início do Processo - KYC
 {
   "idContrato": "123e4567-e89b-12d3-a456-426614174000",
   "evento": "v1.e-consignado.contratacao-ativa.contratos",
@@ -162,15 +168,31 @@ graph TD
   "dataCriacao": "2024-06-10T14:30:00Z"
 }
 ```
-```json Aprovação de Averbação
+```json Aguardando Aprovação de Averbação
 {
   "idContrato": "123e4567-e89b-12d3-a456-426614174000",
   "evento": "v1.e-consignado.contratacao-ativa.contratos",
-  "status": "AVERBACAO_APROVADA",
+  "status": "AGUARDANDO_APROVACAO_AVERBACAO",
+  "dataCriacao": "2024-06-10T15:15:00Z"
+}
+```
+```json Averbação Aprovada
+{
+  "idContrato": "123e4567-e89b-12d3-a456-426614174000",
+  "evento": "v1.e-consignado.contratacao-ativa.contratos",
+  "status": "AVERBACAO_APROVADA_ANEXANDO_DADOS_TRABALHADOR",
   "dataCriacao": "2024-06-10T16:45:00Z"
 }
 ```
-```json Desembolso Realizado
+```json Aguardando Desembolso
+{
+  "idContrato": "123e4567-e89b-12d3-a456-426614174000",
+  "evento": "v1.e-consignado.contratacao-ativa.contratos",
+  "status": "AGUARDANDO_DESEMBOLSO",
+  "dataCriacao": "2024-06-10T17:30:00Z"
+}
+```
+```json Desembolso Realizado ✅
 {
   "idContrato": "123e4567-e89b-12d3-a456-426614174000",
   "evento": "v1.e-consignado.contratacao-ativa.contratos",
@@ -178,15 +200,7 @@ graph TD
   "dataCriacao": "2024-06-10T18:20:00Z"
 }
 ```
-```json Contrato Concluído
-{
-  "idContrato": "123e4567-e89b-12d3-a456-426614174000",
-  "evento": "v1.e-consignado.contratacao-ativa.contratos",
-  "status": "CONCLUIDO",
-  "dataCriacao": "2024-06-10T18:25:00Z"
-}
-```
-```json Rejeição no KYC
+```json Rejeição no KYC ❌
 {
   "idContrato": "123e4567-e89b-12d3-a456-426614174000",
   "evento": "v1.e-consignado.contratacao-ativa.contratos",
@@ -194,7 +208,15 @@ graph TD
   "dataCriacao": "2024-06-10T15:00:00Z"
 }
 ```
-```json Falha no Desembolso
+```json Rejeição na Averbação ❌
+{
+  "idContrato": "123e4567-e89b-12d3-a456-426614174000",
+  "evento": "v1.e-consignado.contratacao-ativa.contratos",
+  "status": "AVERBACAO_REJEITADA",
+  "dataCriacao": "2024-06-10T16:30:00Z"
+}
+```
+```json Falha no Desembolso ⚠️
 {
   "idContrato": "123e4567-e89b-12d3-a456-426614174000",
   "evento": "v1.e-consignado.contratacao-ativa.contratos",
@@ -205,14 +227,13 @@ graph TD
 
 </CodeGroup>
 
-
 ## Status Finais
 
 Os seguintes status indicam que o contrato chegou ao fim de sua jornada:
 
 | Status | Resultado | Descrição |
 |--------|-----------|-----------|
-| `CONCLUIDO` | ✅ Sucesso | Contrato concluído com sucesso |
+| `DESEMBOLSO_REALIZADO` | ✅ Sucesso | Desembolso realizado com sucesso |
 | `PROCESSO_REJEITADO_PELO_KYC` | ❌ Rejeição | Reprovado na análise de KYC |
 | `AVERBACAO_REJEITADA` | ❌ Rejeição | Averbação rejeitada pelo órgão pagador |
 
