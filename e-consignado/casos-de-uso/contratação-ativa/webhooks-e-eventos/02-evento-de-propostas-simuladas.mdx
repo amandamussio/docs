@@ -29,32 +29,32 @@ A Wincred disponibiliza 3 status possíveis para o evento de propostas simuladas
 x-event-type: v1.e-consignado.contratacao-ativa.propostas.simulacoes
 ```
 
-
 ## Payload do Evento
 
 ### Exemplo de Payload - status `CONCLUIDO`
 
 ```json
 {
-  "idCotacao": "123e4567-e89b-12d3-a456-426614174000",
+  "idCotacao": "019a544e-28a4-798f-9a79-d54190acf2e6",
   "status": "CONCLUIDO",
   "evento": "v1.e-consignado.contratacao-ativa.propostas.simulacoes",
   "propostas": [
     {
-      "idProposta": "987e6543-e21b-12d3-a456-426614174999",
-      "dataDeVencimento": "2000-01-01T00:00:00.000",
-      "dataDaLiberacao": "2024-01-05T10:00:00Z",
-      "dataDeExpiracao": "2024-02-05T10:00:00Z",
-      "valorDesembolsoTotal": 1380.0,
-      "valorSeguro": 30.0,
-      "valorDesembolsoTrabalhador": 1350.0,
-      "valorParcela": 138,
-      "numeroParcelas": 10,
-      "taxaJuros": 1.5,
-      "comSeguro": true
+      "idProposta": "019a5452-2396-719d-a4b0-f0b0df30af48",
+      "dataDeVencimento": "2026-01-28T00:00:00Z",
+      "dataDaLiberacao": "2025-11-06T00:00:00Z",
+      "dataDeExpiracao": "2025-11-10T00:00:00Z",
+      "valorDesembolsoTotal": "886.3",
+      "valorSeguro": "73.18",
+      "valorDesembolsoTrabalhador": "886.3",
+      "valorParcela": "115.07",
+      "numeroParcelas": 12,
+      "taxaJuros": "0.0541",
+      "comSeguro": true,
+      "valorComissao": "2.1954"
     }
   ],
-  "dataCriacao": "2024-01-01T10:05:00Z"
+  "dataCriacao": "2025-11-05T11:01:00-03:00"
 }
 ```
 
@@ -98,4 +98,6 @@ x-event-type: v1.e-consignado.contratacao-ativa.propostas.simulacoes
 | `numeroParcelas`             | int      | Número total de parcelas                                                 |
 | `taxaJuros`                  | float    | Taxa de juros aplicada na simulação                                      |
 | `comSeguro`                  | boolean  | Indica se a proposta inclui seguro                                       |
+| `valorComissao`              | string   | Valor da comissão para o canal de venda                                  |
 | `dataCriacao`                | datetime | Data e hora de criação do evento                                         |
+
