@@ -1,0 +1,31 @@
+---
+title: 06 de Novembro de 2025
+description: Ajuste no webhook de processos e atualização no objeto da proposta.
+---
+
+Foi realizado um **ajuste no webhook de processos**, alterando a estrutura do objeto `proposta`.  
+O novo modelo traz campos adicionais relacionados ao custo efetivo total e à composição do valor de empréstimo, além de descontinuar o campo `valorDesembolsoTotal`.
+
+
+### ⚠️ Campos depreciados
+
+| Campo                  | Substituir por         | Observação                                                                      |
+| ---------------------- | ---------------------- | ------------------------------------------------------------------------------- |
+| `valorDesembolsoTotal` | `valorEmprestimoTotal` | O novo campo reflete com maior precisão o valor total do empréstimo contratado. |
+
+
+### 🆕 Novos campos adicionados
+
+| Campo                  | Tipo   | Descrição                                                          |
+| ---------------------- | ------ | ------------------------------------------------------------------ |
+| `cet`                  | string | Custo efetivo total **mensal** da operação.                        |
+| `cetAnual`             | string | Custo efetivo total **anual** da operação.                         |
+| `valorEmprestimoTotal` | string | Valor total do empréstimo contratado, incluindo encargos e seguro. |
+
+###  Observações
+
+- Os novos campos já estão disponíveis no payload do webhook de processos.
+
+- Sistemas que consomem esse webhook devem ser atualizados para utilizar valorEmprestimoTotal no lugar de valorDesembolsoTotal.
+
+- O campo depreciado permanecerá disponível temporariamente para compatibilidade retroativa.

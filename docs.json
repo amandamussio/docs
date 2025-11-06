@@ -69,6 +69,18 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Histórico de Atualizações",
+            "pages": [
+              "changelog/index",
+              "changelog/2025-11-06"
+            ]
+          }
+        ]
       }
     ]
   },
