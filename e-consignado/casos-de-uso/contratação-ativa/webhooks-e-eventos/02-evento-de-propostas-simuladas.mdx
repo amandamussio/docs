@@ -40,22 +40,26 @@ x-event-type: v1.e-consignado.contratacao-ativa.propostas.simulacoes
   "evento": "v1.e-consignado.contratacao-ativa.propostas.simulacoes",
   "propostas": [
     {
-      "idProposta": "019a5452-2396-719d-a4b0-f0b0df30af48",
+      "idProposta": "019a5a92-6524-7578-a1bc-5c37a660b980",
       "dataDeVencimento": "2026-01-28T00:00:00Z",
-      "dataDaLiberacao": "2025-11-06T00:00:00Z",
-      "dataDeExpiracao": "2025-11-10T00:00:00Z",
-      "valorDesembolsoTotal": "886.3",
-      "valorSeguro": "73.18",
-      "valorDesembolsoTrabalhador": "886.3",
-      "valorParcela": "115.07",
-      "numeroParcelas": 12,
-      "taxaJuros": "0.0541",
+      "dataDaLiberacao": "2025-11-07T00:00:00Z",
+      "dataDeExpiracao": "2025-11-11T00:00:00Z",
+      "valorDesembolsoTotal": "1157.2",
+      "valorSeguro": "92.96",
+      "valorDesembolsoTrabalhador": "1032.89", // depreciado use valorEmprestimoTotal
+      "valorParcela": "101.74",
+      "numeroParcelas": 18,
+      "taxaJuros": "4.4",
       "comSeguro": true,
-      "valorComissao": "2.1954"
+      "valorComissao": "61.97",
+      "cet": "4.66",
+      "cetAnual": "72.73",
+      "valorEmprestimoTotal": "1157.2"
     }
   ],
   "dataCriacao": "2025-11-05T11:01:00-03:00"
 }
+
 ```
 
 ### Exemplo de Payload - status `FALHA`
@@ -82,22 +86,24 @@ x-event-type: v1.e-consignado.contratacao-ativa.propostas.simulacoes
 
 ### Campos do Payload
 
-| Campo                        | Tipo     | Descrição                                                                |
-| ---------------------------- | -------- | ------------------------------------------------------------------------ |
-| `idCotacao`                  | UUID     | Identificador único da cotação                                           |
-| `status`                     | string   | Status da simulação (`CONCLUIDO`, `FALHA`, `NENHUMA_SIMULACAO_APROVADA`) |
-| `propostas`                  | array    | Lista de propostas simuladas                                             |
-| `idProposta`                 | UUID     | Identificador único da proposta                                          |
-| `dataDeVencimento`           | datetime | Data de vencimento da primeira parcela                                   |
-| `dataDaLiberacao`            | datetime | Data prevista para liberação do crédito                                  |
-| `dataDeExpiracao`            | datetime | Data de expiração da proposta                                            |
-| `valorDesembolsoTotal`       | float    | Valor total a ser desembolsado                                           |
-| `valorSeguro`                | float    | Valor do seguro incluído na proposta                                     |
-| `valorDesembolsoTrabalhador` | float    | Valor líquido a ser recebido pelo trabalhador                            |
-| `valorParcela`               | float    | Valor de cada parcela                                                    |
-| `numeroParcelas`             | int      | Número total de parcelas                                                 |
-| `taxaJuros`                  | float    | Taxa de juros aplicada na simulação                                      |
-| `comSeguro`                  | boolean  | Indica se a proposta inclui seguro                                       |
-| `valorComissao`              | string   | Valor da comissão para o canal de venda                                  |
-| `dataCriacao`                | datetime | Data e hora de criação do evento                                         |
-
+| Campo                        | Tipo     | Descrição                                                                                                |
+| ---------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `idCotacao`                  | UUID     | Identificador único da cotação                                                                           |
+| `status`                     | string   | Status da simulação (`CONCLUIDO`, `FALHA`, `NENHUMA_SIMULACAO_APROVADA`)                                 |
+| `propostas`                  | array    | Lista de propostas simuladas                                                                             |
+| `idProposta`                 | UUID     | Identificador único da proposta                                                                          |
+| `dataDeVencimento`           | datetime | Data de vencimento da primeira parcela                                                                   |
+| `dataDaLiberacao`            | datetime | Data prevista para liberação do crédito                                                                  |
+| `dataDeExpiracao`            | datetime | Data de expiração da proposta                                                                            |
+| `valorDesembolsoTotal`       | float    | **[DEPRECIADO]** Valor total a ser desembolsado. Utilize `valorEmprestimoTotal` em novas implementações. |
+| `valorEmprestimoTotal`       | float    | Valor total do empréstimo contratado. Substitui `valorDesembolsoTotal`.                                  |
+| `valorSeguro`                | float    | Valor do seguro incluído na proposta                                                                     |
+| `valorDesembolsoTrabalhador` | float    | Valor líquido a ser recebido pelo trabalhador                                                            |
+| `valorParcela`               | float    | Valor de cada parcela                                                                                    |
+| `numeroParcelas`             | int      | Número total de parcelas                                                                                 |
+| `taxaJuros`                  | float    | Taxa de juros aplicada na simulação                                                                      |
+| `cet`                        | float    | Custo efetivo total mensal da operação                                                                   |
+| `cetAnual`                   | float    | Custo efetivo total anual da operação                                                                    |
+| `comSeguro`                  | boolean  | Indica se a proposta inclui seguro                                                                       |
+| `valorComissao`              | string   | Valor da comissão para o canal de venda                                                                  |
+| `dataCriacao`                | datetime | Data e hora de criação do evento                                                                         |
